@@ -41,7 +41,7 @@ class Folder extends Model
                 }
                 $cnt++;
             }
-            if (!is_null($child_arr)) {
+            if (!empty($child_arr)) {
                 return $child_arr;
             }else{
                 return null;

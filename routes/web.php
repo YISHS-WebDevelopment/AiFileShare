@@ -58,8 +58,6 @@ Route::middleware('AdminChk')->group(function () {
     Route::get('/admin/logout',[\App\Http\Controllers\AdminController::class,'logout'])->name('admin.logout');
     Route::get('/admin/folder/manage',[\App\Http\Controllers\FolderController::class,'manage_index'])->name('folder_manage.page');
     Route::get('/admin/board/manage',[\App\Http\Controllers\BoardController::class,'manage_index'])->name('board_manage.page');
-    Route::get('/admin/folder/circle/{circle?}',[\App\Http\Controllers\FolderController::class,'folderList'])->name('folder_list.page');
-    Route::put('/admin/folder/folderManagement',[\App\Http\Controllers\FolderController::class,'folderManagementPage'])->name('folder_management.page');
     Route::delete('/admin/folder/folderDel',[\App\Http\Controllers\FolderController::class,'folderDelete'])->name('folder.delete');
 
 });
