@@ -1,7 +1,7 @@
 @extends('template.app')
 @section('contents')
     <div class="d-flex justify-content-center">
-        <form action="{{route('singup.action')}}" method="post" class="w-50 rounded shadow p-4">
+        <form action="{{route('register.action')}}" method="post" class="w-50 rounded shadow p-4">
             @csrf
             <h2 class="font-weight-bold">회원가입</h2>
             <hr>

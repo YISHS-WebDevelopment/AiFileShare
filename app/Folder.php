@@ -9,15 +9,18 @@ class Folder extends Model
     protected $guarded = [];
     public $timestamps = false;
 
-    public function files(){
+    public function files()
+    {
         return $this->hasMany(File::class);
     }
 
-    public function user() {
+    public function user()
+    {
         return $this->hasOne(User::class, 'id', 'user_id');
     }
 
-    public function childFolders($folder){
+    public function childFolders($folder)
+    {
         if (!is_null($folder)) {
             $find = Folder::where('url', $folder)->first();
             $child = Folder::where('folder_id', $find['id'])->first();
@@ -41,11 +44,28 @@ class Folder extends Model
                 }
                 $cnt++;
             }
-            if (!is_null($child_arr)) {
+            if (!empty($child_arr)) {
                 return $child_arr;
-            }else{
+            } else {
                 return null;
             }
+        }
+    }
+
+    public $result = 0;
+
+    public function getFolderSize($id)
+    {
+        $childFolder = $this->where('folder_id', $id)->get();
+        $files = File::where('folder_id', $id)->get();
+
+        foreach($files as $file) {
+            $result += $file->size;
+        }
+
+        foreach($childFolder as $folder) {
+            $find = $folder->id;
+            $this->getFolderSize($find);
         }
     }
 }

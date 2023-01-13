@@ -20,6 +20,10 @@ class initController extends Controller
         DB::table('grades')->truncate();
         DB::table('files')->truncate();
         DB::table('circles')->truncate();
+        DB::table('boards')->truncate();
+        DB::table('admins')->truncate();
+        DB::table('boards_views')->truncate();
+        DB::table('boards_likes')->truncate();
 
         User::create([
             'id' => 'thsgusqls',

@@ -9,14 +9,17 @@
         <hr>
         <div class="container">
             <div class="d-flex justify-content-between">
-                <div class="d-flex">
+                <div class="d-flex flex-column">
+                    <div class="d-flex">
+                        <span id="important-icon">*</span><span id="read-text">상위 폴더로 이동하려면 ..을 클릭해주세요.</span>
+                    </div>
                     @if(is_null($parent))
                         <h1><a href="{{route('circles.share',[$detail,$category])}}">..</a>/{{$find['title']}}</h1>
                     @else
                         @if(!is_null($path))
                             <h1><a href="{{route('folder.index',[$parent['circle_id'],$category,$parent['url']])}}">..</a>{{$path}}/{{$find['title']}}</h1>
                         @else
-                            <h1><a href="{{route('folder.index',[$parent['circle_id'],$category,$parent['url']])}}">..</a>/{{$parent['title']}}</h1>
+                            <h1><a href="{{route('folder.index',[$parent['circle_id'],$category,$parent['url']])}}">..</a>{{$path}}/{{$find['title']}}</h1>
                         @endif
                     @endif
                 </div>
@@ -105,7 +108,7 @@
 
                     </td>
                     <td>{{date('Y-m-d',strtotime($file->created_at))}}</td>
-                    <td></td>
+                    <td>{{$file->getFileSize($file->size)}}</td>
                     <td>{{$file->user->student_id}}{{$file->user->username}}</td>
                 </tr>
             @endforeach

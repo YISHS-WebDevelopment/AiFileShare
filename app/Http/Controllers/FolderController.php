@@ -49,7 +49,7 @@ class FolderController extends Controller
         if (!is_null($folder)) {
             $find = Folder::where('url', $folder)->first();
             $files = $find->files->all();
-            $parent = Folder::where('folder_id', $find['id'])->first();
+            $parent = Folder::where('id', $find['folder_id'])->first();
             $parent_arr = [];
             $path = null;
             $cnt = 0;
