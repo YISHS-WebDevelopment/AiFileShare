@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Circle;
 use App\Folder;
 use App\Http\Controllers\Controller;
-use DemeterChain\C;
 use Faker\Provider\File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -18,7 +17,7 @@ class FolderController extends Controller
         return view('index', compact(['hash']));
     }
 
-    public function folderCreate(Request $request, $detail,$category, $folder = null)
+    public function folderCreate(Request $request, $detail, $category, $folder = null)
     {
         if (!is_null($folder)) {
             $find = Folder::where('url', $folder)->first();
@@ -78,34 +77,40 @@ class FolderController extends Controller
                 }
             }
         }
-        return view('folders/folderIndex', compact(['find', 'detail','category', 'files', 'parent', 'path']));
+        return view('folders/folderIndex', compact(['find', 'detail', 'category', 'files', 'parent', 'path']));
     }
 
-    public function manage_index(Circle $circle){
-        return view('admin.management.folder_manage',compact(['circle']));
-    }
-    public function folderList($circle){
-        $find = Circle::where('circle',$circle)->first();
-        $folders = Folder::where('circle_id',$circle)->where('folder_id',null)->get();
-        return view('admin.management.folder_list',compact(['folders']));
+    public function manage_index(Circle $circle)
+    {
+        return view('admin.management.folder_manage', compact(['circle']));
     }
 
-    public function folderManagementPage (){
+    public function folderManagementPage()
+    {
 //        return view('admin.management.folder_list',compact(['folders']));
 
     }
-    public function folderDelete (Request $request){
-        $folder = Folder::find($request['id']);
-        $files = $folder->files;
-        $childFolder = $folder->childFolders($folder['url']);
-//        dd((sizeof($childFolder));
-//        if (sizeof($childFolder) !== 0){
+
+//    public function folderDelete(Request $request)
+//    {
+//        $folder = Folder::find($request['id']);
+//        $files = $folder->files;
+//        $childFolder = $folder->childFolders($folder['url']);
+//        if (!empty($childFolder)) {
+//            foreach ($childFolder as $c) {
+//                $c->delete();
+//
+//            }
+//        }
+//        if (!empty($files)) {
+//            foreach ($files as $file) {
+//                \Illuminate\Support\Facades\File::delete($file['title']);
+//                }
+//            $files->delete();
 //
 //        }
-//        $childFolder->delete();
-//        $files->delete();
 //        $folder->delete();
-
-    }
+//
+//    }
 
 }

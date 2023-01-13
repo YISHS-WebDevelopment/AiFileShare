@@ -27,23 +27,31 @@
             <a href="{{route('circles.page')}}" class="mr-5">동아리</a>
         </div>
         <div class="d-flex align-items-center">
-            @auth
-                <span class="mr-3">{{auth()->user()->student_id}}{{auth()->user()->username}}</span>
-                <a href="{{route('logout')}}"><button class="btn btn-danger">로그아웃</button></a>
-            @elseauth('admin')
+            @auth('admin')
                 <span class="mr-3">{{auth()->guard('admin')->user()->name}}</span>
-                <a href="{{route('admin.logout')}}"><button class="btn btn-danger">로그아웃</button></a>
+                <a href="{{route('admin.logout')}}">
+                    <button class="btn btn-danger">로그아웃</button>
+                </a>
+            @elseauth('web')
+                <span class="mr-3">{{auth()->user()->student_id}}{{auth()->user()->username}}</span>
+                <a href="{{route('logout')}}">
+                    <button class="btn btn-danger">로그아웃</button>
+                </a>
             @endauth
             @guest
-                    <a href="{{route('login.page')}}"><button class="btn btn-primary mr-3">로그인</button></a>
-                    <a href="{{route('register.page')}}"><button class="btn btn-primary">회원가입</button></a>
+                <a href="{{route('login.page')}}">
+                    <button class="btn btn-primary mr-3">로그인</button>
+                </a>
+                <a href="{{route('register.page')}}">
+                    <button class="btn btn-primary">회원가입</button>
+                </a>
             @endguest
         </div>
     </div>
 </header>
 
-    <div class="container padding-div">
-        @yield('contents')
-    </div>
+<div class="container padding-div">
+    @yield('contents')
+</div>
 </body>
 </html>
