@@ -1,0 +1,16 @@
+a:hover{
+    color: #0f6674;
+    transition: .3s;
+}
+a{
+    transition: .3s;
+}
+
+#file-icon {
+    font-size: 1.5rem;
+}
+
+.folder-icon {
+    width: 30px;
+    height: 30px;
+}

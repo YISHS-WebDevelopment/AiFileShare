@@ -1,0 +1,20 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+header {
+    height: 100px;
+    background: #fff;
+}
+
+header a, header span {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.padding-div {
+    padding: 150px 0;
+}
+
