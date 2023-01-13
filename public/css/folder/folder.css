@@ -14,3 +14,14 @@ a{
     width: 30px;
     height: 30px;
 }
+
+#read-text {
+    font-size: .9rem;
+    color: #aaa;
+}
+
+#important-icon {
+    font-size: 1.1rem;
+    color: red;
+    margin-right: 5px;
+}

@@ -31,7 +31,9 @@ class FileController extends Controller
                 'user_id' => auth()->user()->id,
                 'title' => $file_data['name'],
                 'path' => $file,
-                'folder_id' => $find['id']
+                'folder_id' => $find['id'],
+                'size' => $request->file->getSize(),
+                'extension' => $request->file->getClientOriginalExtension(),
             ]);
             return back();
         }
