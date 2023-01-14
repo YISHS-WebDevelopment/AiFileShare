@@ -52,20 +52,17 @@ class Folder extends Model
         }
     }
 
-    public $result = 0;
-
-    public function getFolderSize($id)
+    public function getFileSize($byte)
     {
-        $childFolder = $this->where('folder_id', $id)->get();
-        $files = File::where('folder_id', $id)->get();
+        $kb = $byte / 1024;
+        $mb = $kb / 1024;
+        $gb = $mb / 1024;
 
-        foreach($files as $file) {
-            $result += $file->size;
-        }
+        if ($mb >= 1) $result = round($mb, 1) . 'MB';
+        else if ($gb >= 1) $result = round($gb, 1) . 'GB';
+        else $result = round($kb, 1) . 'KB';
 
-        foreach($childFolder as $folder) {
-            $find = $folder->id;
-            $this->getFolderSize($find);
-        }
+        return $result;
     }
+
 }

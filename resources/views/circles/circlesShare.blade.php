@@ -83,8 +83,9 @@
                            href="{{route('folder.index',[$detail,$category,$folder['url']])}}">{{$folder->title}}</a>
                     </td>
                     <td>{{date('Y-m-d',strtotime($folder->created_at))}}</td>
-                    <td></td>
+                    <td>{{$folder->getFileSize($folder->size)}}</td>
                     <td>{{$folder->user->student_id}}{{$folder->user->username}}</td>
+                    @auth('admin')
                     <td class="d-flex">
                         <form action="{{route('folder_manage.page')}}" method="get">
                             @csrf
@@ -94,6 +95,7 @@
                             <button class="btn btn-outline-danger ml-2">삭제</button>
                         </form>
                     </td>
+                    @endauth
                 </tr>
             @endforeach
             </tbody>

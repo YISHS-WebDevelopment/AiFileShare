@@ -20,7 +20,7 @@ class CreateFilesTable extends Migration
             $table->bigInteger('folder_id');
             $table->dateTime('created_at')->useCurrent();
             $table->string('path');
-            $table->string('size');
+            $table->bigInteger('size');
             $table->string('extension');
         });
     }
