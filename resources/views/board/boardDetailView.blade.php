@@ -52,7 +52,7 @@
                     <button class="btn btn-outline-primary"
                             onclick="location.href='{{route('boardModifyPage',$board->id)}}'">수정
                     </button>
-                    <button class="btn btn-outline-danger ml-2">삭제</button>
+                    <button class="btn btn-outline-danger ml-2" ONCLICK="location.href='{{route('board.delete',$board)}}'">삭제</button>
                 </div>
 
             </div>

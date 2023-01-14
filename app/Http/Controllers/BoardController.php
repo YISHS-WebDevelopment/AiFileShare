@@ -30,7 +30,7 @@ class BoardController extends Controller
     {
         $board = Board::find($id);
         if (auth()->check()) {
-            if ($board->user_id !== auth()->user()->id || auth()->user()->type !== 'admin') {
+            if ($board->user_id !== auth()->user()->id && auth()->user()->type !== 'admin') {
                 return redirect(route('board.detail.view', $board->id))->with('msg', '관리자와 본인만 글 수정이 가능합니다.');
             }
         }
@@ -96,7 +96,16 @@ class BoardController extends Controller
         if ($type === 'circles') return redirect()->route('board.page', [$detail, $category])->with('msg', '작성이 완료되었습니다.');
         else return redirect()->route('board.page', ['null', $category])->with('msg', '작성이 완료되었습니다.');
     }
-
+    public function delete(Board $board){
+        if (auth()->check()) {
+            if ($board->user_id !== auth()->user()->id && auth()->user()->type !== 'admin') {
+                return redirect(route('board.detail.view', $board->id))->with('msg', '관리자와 본인만 글 삭제 가능합니다.');
+            }
+        }
+        $category = $board->category;
+        $board->delete();
+        return redirect(route('board.detail',[auth()->user()->circle_id,$category]))->with('msg','게시글이 삭제되었습니다.');
+    }
     public function detailView($id)
     {
         $board = Board::where('id', $id)->first();
