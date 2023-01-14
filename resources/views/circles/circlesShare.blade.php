@@ -1,8 +1,7 @@
 @extends('template.app')
 
 @section('script')
-    <script src="{{asset('/public/js/circles/sharePage.js')}}"></script>
-
+    <script src="{{asset('/public/js/circles/folder.js')}}"></script>
 @endsection
 @section('style')
     <link rel="stylesheet" href="{{asset('/public/css/folder/folder.css')}}">
@@ -69,6 +68,7 @@
                     </div>
                 </th>
                 <th>작성자</th>
+                <th>메뉴</th>
                 @if(auth()->user()->type === 'admin')
                     <th>관리</th>
                 @endif
@@ -84,16 +84,29 @@
                            href="{{route('folder.index',[$detail,$category,$folder['url']])}}">{{$folder->title}}</a>
                     </td>
                     <td>{{date('Y-m-d',strtotime($folder->created_at))}}</td>
-                    <td>{{$folder->getFileSize($folder->size)}}</td>
+                    <td>{{$folder->sizeExplode($folder->size)}}</td>
                     <td>{{$folder->user->student_id}}{{$folder->user->username}}</td>
-
+                    <td>
+                        <div class="dropdown show">
+                            <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
+                               aria-haspopup="true" aria-expanded="false">
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <a class="dropdown-item" href="#">복사</a>
+                                <a class="dropdown-item" href="#">다운(ZIP)</a>
+                                <form action="">
+                                    <a class="dropdown-item" href="{{route('folder.delete',[$folder->id])}}" onclick="return confirm('정말 삭제하시겠습니까? 하부 폴더와 파일들이 모두 삭제됩니다.')">삭제</a>
+                                </form>
+                            </div>
+                        </div>
+                    </td>
                     @if(auth()->user()->type === 'admin')
                         <td class="d-flex">
                             <form action="{{route('folder_manage.page')}}" method="get">
                                 @csrf
                                 <button class="btn btn-outline-primary" type="submit">관리</button>
                             </form>
-                            <form action="{{route('folder.delete',$folder['id'])}}" method="post">
+                            <form action="{{route('admin.folder.delete',$folder['id'])}}" method="post">
                                 @csrf
                                 @method('delete')
                                 <button class="btn btn-outline-danger ml-2" value="{{$folder['id']}}"

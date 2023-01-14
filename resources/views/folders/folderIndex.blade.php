@@ -1,5 +1,8 @@
 @extends('template.app')
 
+@section('script')
+    <script src="{{asset('/public/js/circles/folder.js')}}"></script>
+@endsection
 @section('style')
     <link rel="stylesheet" href="{{asset('/public/css/folder/folder.css')}}">
 @endsection
@@ -78,6 +81,7 @@
                     </div>
                 </th>
                 <th>작성자</th>
+                <th>메뉴</th>
             </tr>
             </thead>
             <tbody>
@@ -88,28 +92,43 @@
                         <a href="{{route('folder.index',[$detail,$category,$folder['url']])}}">{{$folder->title}}</a>
                     </td>
                     <td>{{date('Y-m-d',strtotime($folder->created_at))}}</td>
-                    <td>{{$folder->getFileSize($folder->size)}}</td>
+                    <td>{{$folder->sizeExplode($folder->size)}}</td>
                     <td>{{$folder->user->student_id}}{{$folder->user->username}}</td>
+                    <td>
+                        <div class="dropdown show">
+                            <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
+                               aria-haspopup="true" aria-expanded="false">
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <a class="dropdown-item" href="#">복사</a>
+                                <a class="dropdown-item" href="#">다운(ZIP)</a>
+                                <a class="dropdown-item" href="{{route('folder.delete',[$folder->id])}}" onclick="return confirm('정말 삭제하시겠습니까? 하부 폴더와 파일들이 모두 삭제됩니다.')">삭제</a>
+                            </div>
+                        </div>
+                    </td>
                 </tr>
             @endforeach
             @foreach($files as $file)
                 <tr>
                     <td><img src="{{asset('/public/images/txt_icon.svg')}}" class="folder-icon" alt="folder_icon"></td>
                     <td>
+                        {{$file['title']}}
+                    </td>
+                    <td>{{date('Y-m-d',strtotime($file->created_at))}}</td>
+                    <td>{{$file->sizeExplode($file->size)}}</td>
+                    <td>{{$file->user->student_id}}{{$file->user->username}}</td>
+                    <td>
                         <div class="dropdown show">
-                            <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                {{$file['title']}}
+                            <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
+                               aria-haspopup="true" aria-expanded="false">
                             </a>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <a class="dropdown-item" href="#">복사</a>
                                 <a class="dropdown-item" href="{{route('file.download',[$file->id])}}">다운로드</a>
                                 <a class="dropdown-item" href="{{route('file.delete',[$file->id])}}" onclick="return confirm('정말 삭제하시겠습니까?')">삭제</a>
                             </div>
                         </div>
-
                     </td>
-                    <td>{{date('Y-m-d',strtotime($file->created_at))}}</td>
-                    <td>{{$file->getFileSize($file->size)}}</td>
-                    <td>{{$file->user->student_id}}{{$file->user->username}}</td>
                 </tr>
             @endforeach
             </tbody>

@@ -22,15 +22,12 @@ class FileController extends Controller
             $tmp = explode('.', $file_data['name']);
             $ext = $tmp[count($tmp) - 1];
             $img = ['jpg', 'jpeg', 'jfif', 'png', 'svg', 'gif'];
-            if (in_array($ext, $img)) {
-                $file = $request->file->storeAs('/public/' . $find['circle_id'] . '/img', time() . '_' . $file_data['name']);
-            } else {
-                $file = $request->file->storeAs('/public/' . $find['circle_id'] . '/files', time() . '_' . $file_data['name']);
-            }
+            $request->file->storeAs($find->path, $file_data['name']);
+
             File::create([
                 'user_id' => auth()->user()->id,
                 'title' => $file_data['name'],
-                'path' => $file,
+                'path' => $find->path."/".$file_data['name'],
                 'folder_id' => $find['id'],
                 'size' => $request->file->getSize(),
                 'extension' => $request->file->getClientOriginalExtension(),
@@ -44,18 +41,16 @@ class FileController extends Controller
     public function fileDownload($id)
     {
         $file = File::find($id);
-        $path = storage_path('app/') . $file->path;
         $headers = ['Content-Type: application/txt'];
-        $replace = str_replace('/', '\\', $path);
-        return Response::download($replace, $file->title);
+        return Storage::download($file->path, $file->title);
     }
 
     public function fileDelete($id)
     {
         $file = File::find($id);
         $file->delete();
+        Storage::delete($file->path);
         $this->sumSizeUpdate($file->folder, 0);
-
         return back()->with('msg', '삭제되었습니다.');
     }
 }
