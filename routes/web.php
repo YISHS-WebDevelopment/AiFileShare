@@ -54,6 +54,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/post/modify/{id}', [BoardController::class, 'modifyPage'])->name('boardModifyPage');
     Route::put('/post/modify/{board}', [BoardController::class, 'modifyAction'])->name('boardModify.action');
     Route::post('/board/like',[BoardController::class, 'likeClick'])->name('board.like');
+    Route::get('/post/delete/{board}',[BoardController::class, 'delete'])->name('board.delete');
 
 //관리자(어드민) 페이지
     Route::get('/admin/index',[\App\Http\Controllers\AdminController::class,'index'])->name('admin.index');
