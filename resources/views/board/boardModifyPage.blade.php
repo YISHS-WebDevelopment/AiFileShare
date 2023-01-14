@@ -45,19 +45,16 @@
         });
     </script>
 @endsection
+
 @section('contents')
     <div class="d-flex justify-content-center">
-        @if($detail !== 'null')
-            <form action="{{route('board.circles.write.action',[$detail, $category, $type])}}" method="post"
-                  enctype="multipart/form-data" class="w-100 rounded shadow p-4">
-                @else
-                    <form action="{{route('board.all.write.action',['null',$category, $type])}}" method="post"
+                    <form action="{{route('boardModify.action',$board)}}" method="post"
                           enctype="multipart/form-data" class="w-100 rounded shadow p-4">
-                        @endif
                         @csrf
+                        @method('put')
                         <div class="d-flex flex-column">
                             <div class="d-flex justify-content-between">
-                                <h2 class="font-weight-bold">글 쓰기({{$category === 'all' ? '전체' : $category.'학년'}})</h2>
+                                <h2 class="font-weight-bold">글 쓰기({{$board->category === 'all' ? '전체' : $category.'학년'}})</h2>
                                 <button class="btn btn-sm btn-secondary" type="button"
                                         onclick="location.href='{{url()->previous()}}'">목록으로
                                 </button>
@@ -72,7 +69,7 @@
                                 <span class="danger-mark">*</span>
                                 <p>제목</p>
                             </div>
-                            <input type="text" name="title" class="form-control" required placeholder="제목을 입력해주세요.">
+                            <input type="text" name="title" class="form-control" required placeholder="제목을 입력해주세요." value="{{$board->title}}">
                         </div>
                         <hr>
                         <div>
@@ -81,10 +78,12 @@
                                 <p>내용</p>
                             </div>
                             <textarea name="editordata" id="summernote" cols="30" rows="10" required
-                                      placeholder="내용을 입력해주세요." class="form-control"></textarea>
+                                      placeholder="내용을 입력해주세요." class="form-control">
+                            {!! $board['contents'] !!}
+                            </textarea>
                         </div>
                         <hr>
-                        <button class="btn btn-primary w-100" type="submit">작성</button>
+                        <button class="btn btn-primary w-100" type="submit">수정</button>
                     </form>
     </div>
 @endsection

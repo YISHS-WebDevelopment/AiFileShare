@@ -27,12 +27,8 @@
             <a href="{{route('circles.page')}}" class="mr-5">동아리</a>
         </div>
         <div class="d-flex align-items-center">
-            @auth('admin')
-                <span class="mr-3">{{auth()->guard('admin')->user()->name}}</span>
-                <a href="{{route('admin.logout')}}">
-                    <button class="btn btn-danger">로그아웃</button>
-                </a>
-            @elseauth('web')
+
+            @auth()
                 <span class="mr-3">{{auth()->user()->student_id}}{{auth()->user()->username}}</span>
                 <a href="{{route('logout')}}">
                     <button class="btn btn-danger">로그아웃</button>

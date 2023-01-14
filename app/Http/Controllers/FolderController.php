@@ -38,8 +38,6 @@ class FolderController extends Controller
                 'grade_id' => $category,
             ]);
         }
-        //!!!
-        // auth()->user()->id 로 꼭바꾸세요 개석섹스
         return back();
     }
 
