@@ -30,7 +30,10 @@ class FolderController extends Controller
                 'url' => str_replace('/', '', Hash::make($request->title)),
                 'folder_id' => $find['id'],
                 'grade_id' => $category,
+                'path' => $find->path."/".$request->title,
             ]);
+            Storage::makeDirectory($find->path."/".$request->title);
+
         $this->rootIdUpdate(Folder::where('url',$cfolder->url)->first(),$cfolder);
         } else {
             $cfolder = Folder::create([
@@ -39,11 +42,28 @@ class FolderController extends Controller
                 'circle_id' => $detail,
                 'url' => str_replace('/', '', Hash::make($request->title)),
                 'grade_id' => $category,
-                'path' => storage_path('app')."\\".$detail."\\".$category."\\".$request->title,
+                'path' => 'circles/'.$detail."/".$category."/".$request->title,
             ]);
-            Storage::makeDirectory($detail."/".$category."/".$request->title);
+            Storage::makeDirectory('circles/'.$detail."/".$category."/".$request->title);
         }
         return back();
+    }
+
+    public function folderDelete($id)
+    {
+        $find = Folder::find($id);
+        foreach(\App\File::where('folder_id', $id)->get() as $file) {
+            $file->delete();
+        }
+        foreach(Folder::where('folder_id', $id)->get() as $folder) {
+            $folder->delete();
+        }
+
+        Storage::deleteDirectory($find->path);
+        $this->sumSizeUpdate(Folder::where('folder_id',$find->folder_id)->first(), 0);
+        $find->delete();
+
+        return back()->with('msg', '삭제되었습니다.');
     }
 
     public function rootIdUpdate($dir, $updateDir) {

@@ -36,6 +36,7 @@ Route::middleware(['auth'])->group(function () {
     //폴더
     Route::get('/circles/{detail}/{category}/sharedFolder/{folder}', [FolderController::class, 'folderView'])->name('folder.index');
     Route::post('/folderManager/folderCreate/{detail}/{category}/{folder?}', [FolderController::class, 'folderCreate'])->name('folder.create');
+    Route::get('/folder/delete/{id}', [FolderController::class, 'folderDelete'])->name('folder.delete');
 
     //파일
     Route::post('/file/create/{folder}', [FileController::class, 'fileCreate'])->name('file.create');
@@ -61,7 +62,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/admin/logout',[\App\Http\Controllers\AdminController::class,'logout'])->name('admin.logout');
     Route::get('/admin/folder/manage',[\App\Http\Controllers\FolderController::class,'manage_index'])->name('folder_manage.page');
     Route::get('/admin/board/manage',[\App\Http\Controllers\BoardController::class,'manage_index'])->name('board_manage.page');
-    Route::delete('/admin/folder/folderDel',[\App\Http\Controllers\FolderController::class,'folderDelete'])->name('folder.delete');
+    Route::delete('/admin/folder/folderDel',[\App\Http\Controllers\FolderController::class,'folderDelete'])->name('admin.folder.delete');
 
 
 });
