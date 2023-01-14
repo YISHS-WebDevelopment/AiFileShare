@@ -21,6 +21,7 @@ class FolderController extends Controller
     {
         if (!is_null($folder)) {
             $find = Folder::where('url', $folder)->first();
+
             $cfolder = Folder::create([
                 'title' => $request->title,
                 'user_id' => auth()->user()->id,
@@ -29,6 +30,9 @@ class FolderController extends Controller
                 'folder_id' => $find['id'],
                 'grade_id' => $category,
             ]);
+
+        $this->rootIdUpdate(Folder::where('url',$cfolder->url)->first(),$cfolder);
+
         } else {
             $cfolder = Folder::create([
                 'title' => $request->title,
@@ -39,6 +43,15 @@ class FolderController extends Controller
             ]);
         }
         return back();
+    }
+
+    public function rootIdUpdate($dir, $updateDir) {
+        $parent_id = $dir->folder_id;
+        if(is_null($parent_id)) {
+            return $updateDir->update(['root_id' => $dir->id]);
+        } else {
+            $this->rootIdUpdate(Folder::find($parent_id),$updateDir);
+        }
     }
 
     public function folderView($detail, $category, $folder = null)
