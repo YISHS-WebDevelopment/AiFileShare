@@ -4,12 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Admin;
 use App\Circle;
+use App\Dir;
 use App\Grade;
 use App\Http\Controllers\Controller;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class initController extends Controller
 {
@@ -24,6 +26,7 @@ class initController extends Controller
         DB::table('admins')->truncate();
         DB::table('boards_views')->truncate();
         DB::table('boards_likes')->truncate();
+        DB::table('dirs')->truncate();
 
         User::create([
             'id' => 'thsgusqls',
@@ -103,6 +106,48 @@ class initController extends Controller
                     ]);
                 }
             }
+        }
+        Dir::create([
+            'name' => 'all/all',
+            'dir' => 'all/all',
+        ]);
+        Dir::create([
+            'name' => 'all/1',
+            'dir' => 'all/1',
+        ]);
+        Dir::create([
+            'name' => 'all/2',
+            'dir' => 'all/2',
+        ]);
+        Dir::create([
+            'name' => 'all/3',
+            'dir' => 'all/3',
+        ]);
+        Storage::makeDirectory('all/all');
+        Storage::makeDirectory('all/1');
+        Storage::makeDirectory('all/2');
+        Storage::makeDirectory('all/3');
+        foreach(Circle::all() as $circle) {
+            Storage::makeDirectory('circle/'.$circle->circle.'/all');
+            Storage::makeDirectory('circle/'.$circle->circle.'/1');
+            Storage::makeDirectory('circle/'.$circle->circle.'/2');
+            Storage::makeDirectory('circle/'.$circle->circle.'/3');
+            Dir::create([
+                'name' => $circle->circle.'/all',
+                'dir' => 'circle/'.$circle->circle."/".'all',
+            ]);
+            Dir::create([
+                'name' => $circle->circle.'/1',
+                'dir' => 'circle/'.$circle->circle."/".'1',
+            ]);
+            Dir::create([
+                'name' => $circle->circle.'/2',
+                'dir' => 'circle/'.$circle->circle."/".'2',
+            ]);
+            Dir::create([
+                'name' => $circle->circle.'/3',
+                'dir' => 'circle/'.$circle->circle."/".'3',
+            ]);
         }
     }
 }

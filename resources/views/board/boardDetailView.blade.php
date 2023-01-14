@@ -14,8 +14,6 @@
     </style>
 @endsection
 @section('script')
-    @if(auth('admin')->check())
-    @else
         <script>
             $(() => {
                 $(document)
@@ -42,7 +40,6 @@
                     })
             })
         </script>
-    @endif
 @endsection
 @section('contents')
     <div>

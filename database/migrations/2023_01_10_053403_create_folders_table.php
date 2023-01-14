@@ -24,6 +24,7 @@ class CreateFoldersTable extends Migration
             $table->dateTime('created_at')->useCurrent();
             $table->string('url')->nullable();
             $table->bigInteger('size')->default(0);
+            $table->string('path');
         });
     }
 
