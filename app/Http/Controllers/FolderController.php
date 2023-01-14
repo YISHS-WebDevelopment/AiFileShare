@@ -9,6 +9,7 @@ use Faker\Provider\File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class FolderController extends Controller
 {
@@ -30,9 +31,7 @@ class FolderController extends Controller
                 'folder_id' => $find['id'],
                 'grade_id' => $category,
             ]);
-
         $this->rootIdUpdate(Folder::where('url',$cfolder->url)->first(),$cfolder);
-
         } else {
             $cfolder = Folder::create([
                 'title' => $request->title,
@@ -40,7 +39,9 @@ class FolderController extends Controller
                 'circle_id' => $detail,
                 'url' => str_replace('/', '', Hash::make($request->title)),
                 'grade_id' => $category,
+                'path' => storage_path('app')."\\".$detail."\\".$category."\\".$request->title,
             ]);
+            Storage::makeDirectory($detail."/".$category."/".$request->title);
         }
         return back();
     }
