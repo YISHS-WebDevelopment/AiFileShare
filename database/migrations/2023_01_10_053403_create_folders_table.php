@@ -18,10 +18,12 @@ class CreateFoldersTable extends Migration
             $table->string('user_id');
             $table->string('title');
             $table->bigInteger('folder_id')->nullable();
+            $table->integer('root_id')->nullable();
             $table->string('grade_id')->nullable();
             $table->string('circle_id')->nullable();
             $table->dateTime('created_at')->useCurrent();
             $table->string('url')->nullable();
+            $table->bigInteger('size')->default(0);
         });
     }
 

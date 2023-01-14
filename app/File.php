@@ -13,6 +13,10 @@ class File extends Model
         return $this->hasOne(User::class, 'id', 'user_id');
     }
 
+    public function folder() {
+        return $this->hasOne(Folder::class, 'id', 'folder_id');
+    }
+
     public function getFileSize($byte) {
         $kb = $byte / 1024;
         $mb = $kb / 1024;

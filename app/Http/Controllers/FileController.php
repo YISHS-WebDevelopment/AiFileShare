@@ -35,6 +35,8 @@ class FileController extends Controller
                 'size' => $request->file->getSize(),
                 'extension' => $request->file->getClientOriginalExtension(),
             ]);
+
+            $this->sumSizeUpdate($find, 0);
             return back();
         }
     }
@@ -52,6 +54,7 @@ class FileController extends Controller
     {
         $file = File::find($id);
         $file->delete();
+        $this->sumSizeUpdate($file->folder, 0);
 
         return back()->with('msg', '삭제되었습니다.');
     }
