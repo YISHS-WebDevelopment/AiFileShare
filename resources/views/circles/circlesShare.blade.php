@@ -2,6 +2,7 @@
 
 @section('script')
     <script src="{{asset('/public/js/circles/sharePage.js')}}"></script>
+
 @endsection
 @section('style')
     <link rel="stylesheet" href="{{asset('/public/css/folder/folder.css')}}">
@@ -68,9 +69,9 @@
                     </div>
                 </th>
                 <th>작성자</th>
-                @auth('admin')
+                @if(auth()->user()->type === 'admin')
                     <th>관리</th>
-                @endauth
+                @endif
             </tr>
             </thead>
             <tbody>
@@ -85,17 +86,24 @@
                     <td>{{date('Y-m-d',strtotime($folder->created_at))}}</td>
                     <td>{{$folder->getFileSize($folder->size)}}</td>
                     <td>{{$folder->user->student_id}}{{$folder->user->username}}</td>
-                    @auth('admin')
-                    <td class="d-flex">
-                        <form action="{{route('folder_manage.page')}}" method="get">
-                            @csrf
-                            <button class="btn btn-outline-primary" type="submit">관리</button>
-                        </form>
-                        <form action="{{route('folder.delete')}}" method="get">
-                            <button class="btn btn-outline-danger ml-2">삭제</button>
-                        </form>
-                    </td>
-                    @endauth
+
+                    @if(auth()->user()->type === 'admin')
+                        <td class="d-flex">
+                            <form action="{{route('folder_manage.page')}}" method="get">
+                                @csrf
+                                <button class="btn btn-outline-primary" type="submit">관리</button>
+                            </form>
+                            <form action="{{route('folder.delete',$folder['id'])}}" method="post">
+                                @csrf
+                                @method('delete')
+                                <button class="btn btn-outline-danger ml-2" value="{{$folder['id']}}"
+                                        onclick="return confirm('정말 삭제하시겠습니까? 하부 폴더와 파일들이 모두 삭제됩니다.');" id="folder_del">
+                                    삭제
+                                </button>
+                            </form>
+                        </td>
+                    @endif
+
                 </tr>
             @endforeach
             </tbody>

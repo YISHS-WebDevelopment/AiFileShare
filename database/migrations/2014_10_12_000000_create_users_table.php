@@ -20,6 +20,7 @@ class CreateUsersTable extends Migration
             $table->string('circle_id');
             $table->string('grade_id');
             $table->string('student_id');
+            $table->string('type')->default('user');
         });
     }
 

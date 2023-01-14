@@ -10,7 +10,7 @@ class Authenticate extends Middleware
 
     public function handle($request, Closure $next, ...$guards)
     {
-        if(auth()->user()) return $next($request);
+        if(auth()->check()) return $next($request);
         return redirect()->route('login.page')->withErrors('로그인 후 이용가능합니다.');
     }
 

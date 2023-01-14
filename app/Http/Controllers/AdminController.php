@@ -26,7 +26,7 @@ class AdminController extends Controller
             'id' => $request['id'],
             'password' => $request['password'],
         ];
-        $login = Auth::guard('admin')->attempt($attempt_data);
+        $login = Auth::login($attempt_data);
         if ($login){
             return redirect(route('admin.index'))->with('msg','관리자 로그인 완료.');
         }
@@ -34,7 +34,7 @@ class AdminController extends Controller
     }
 
     public function logout(){
-        Auth::guard('admin')->logout();
+        Auth::logout();
         return redirect(route('index'))->with('msg','로그아웃 되었습니다.');
     }
 }

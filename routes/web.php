@@ -27,7 +27,7 @@ Route::get('/admin/login',[\App\Http\Controllers\AdminController::class,'login']
 Route::post('/admin/login',[\App\Http\Controllers\AdminController::class,'loginAction'])->name('admin.login.action');
 
 //로그인 된 유저만
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth'])->group(function () {
     //동아리
     Route::get('/circles', [CirclesController::class, 'view'])->name('circles.page');
     Route::get('/circles/{detail}/{category}', [CirclesController::class, 'detail'])->name('circles.detail');
@@ -47,18 +47,20 @@ Route::middleware('auth')->group(function () {
     Route::get('/board/{detail}/{category}',[BoardController::class, 'view'])->name('board.detail');
     Route::get('/board/{detail?}/{category}/{type}/write', [BoardController::class, 'writePage'])->name('board.all.write');
     Route::get('/board/{detail}/{category}/{type}/write', [BoardController::class, 'writePage'])->name('board.circles.write');
+
     Route::post('/board/{detail?}/{category}/{type}/write',[BoardController::class, 'writeAction'])->name('board.all.write.action');
     Route::post('/board/{detail}/{category}/{type}/write',[BoardController::class, 'writeAction'])->name('board.circles.write.action');
     Route::get('/board/{id}',[BoardController::class, 'detailView'])->name('board.detail.view');
+    Route::get('/post/modify/{id}', [BoardController::class, 'modifyPage'])->name('boardModifyPage');
+    Route::put('/post/modify/{board}', [BoardController::class, 'modifyAction'])->name('boardModify.action');
     Route::post('/board/like',[BoardController::class, 'likeClick'])->name('board.like');
-});
+
 //관리자(어드민) 페이지
-Route::middleware('AdminChk')->group(function () {
     Route::get('/admin/index',[\App\Http\Controllers\AdminController::class,'index'])->name('admin.index');
     Route::get('/admin/logout',[\App\Http\Controllers\AdminController::class,'logout'])->name('admin.logout');
     Route::get('/admin/folder/manage',[\App\Http\Controllers\FolderController::class,'manage_index'])->name('folder_manage.page');
     Route::get('/admin/board/manage',[\App\Http\Controllers\BoardController::class,'manage_index'])->name('board_manage.page');
     Route::delete('/admin/folder/folderDel',[\App\Http\Controllers\FolderController::class,'folderDelete'])->name('folder.delete');
 
-});
 
+});
