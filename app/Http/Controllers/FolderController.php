@@ -22,7 +22,9 @@ class FolderController extends Controller
     {
         if (!is_null($folder)) {
             $find = Folder::where('url', $folder)->first();
-
+            foreach(Folder::where('folder_id', $find->id)->get() as $item) {
+                if($request->title === $item->title) return back()->with('msg', '중복되는 폴더 이름이 있습니다.');
+            }
             $cfolder = Folder::create([
                 'title' => $request->title,
                 'user_id' => auth()->user()->id,
@@ -30,21 +32,24 @@ class FolderController extends Controller
                 'url' => str_replace('/', '', Hash::make($request->title)),
                 'folder_id' => $find['id'],
                 'grade_id' => $category,
-                'path' => $find->path."/".$request->title,
+                'path' => $find->path . "/" . $request->title,
             ]);
-            Storage::makeDirectory($find->path."/".$request->title);
+            Storage::makeDirectory($find->path . "/" . $request->title);
 
-        $this->rootIdUpdate(Folder::where('url',$cfolder->url)->first(),$cfolder);
+            $this->rootIdUpdate(Folder::where('url', $cfolder->url)->first(), $cfolder);
         } else {
+            foreach(Folder::where('folder_id', null)->get() as $item) {
+                if($request->title === $item->title) return back()->with('msg', '중복되는 폴더 이름이 있습니다.');
+            }
             $cfolder = Folder::create([
                 'title' => $request->title,
                 'user_id' => auth()->user()->id,
                 'circle_id' => $detail,
                 'url' => str_replace('/', '', Hash::make($request->title)),
                 'grade_id' => $category,
-                'path' => 'circles/'.$detail."/".$category."/".$request->title,
+                'path' => 'circles/' . $detail . "/" . $category . "/" . $request->title,
             ]);
-            Storage::makeDirectory('circles/'.$detail."/".$category."/".$request->title);
+            Storage::makeDirectory('circles/' . $detail . "/" . $category . "/" . $request->title);
         }
 
         return back();
@@ -53,10 +58,10 @@ class FolderController extends Controller
     public function folderDelete($id)
     {
         $find = Folder::find($id);
-        foreach(\App\File::where('folder_id', $id)->get() as $file) {
+        foreach (\App\File::where('folder_id', $id)->get() as $file) {
             $file->delete();
         }
-        foreach(Folder::where('folder_id', $id)->get() as $folder) {
+        foreach (Folder::where('folder_id', $id)->get() as $folder) {
             $folder->delete();
         }
 
@@ -67,13 +72,37 @@ class FolderController extends Controller
         return back()->with('msg', '삭제되었습니다.');
     }
 
-    public function rootIdUpdate($dir, $updateDir) {
+    public function rootIdUpdate($dir, $updateDir)
+    {
         $parent_id = $dir->folder_id;
-        if(is_null($parent_id)) {
+        if (is_null($parent_id)) {
             return $updateDir->update(['root_id' => $dir->id]);
         } else {
-            $this->rootIdUpdate(Folder::find($parent_id),$updateDir);
+            $this->rootIdUpdate(Folder::find($parent_id), $updateDir);
         }
+    }
+
+    public function folderRename(Request $request)
+    {
+        $find = Folder::find($request->id);
+
+        foreach(Folder::where('folder_id', $find->folder_id)->get() as $folder) {
+            if($folder->title === $request->title) return false;
+        }
+
+        $explode = explode('/', $find->path);
+        $explode[count($explode) - 1] = $request->title;
+        $path = join("/", $explode);
+
+        Storage::move($find->path,$path);
+
+        $find->update([
+            'title' => $request->title,
+            'path' => $path,
+            'created_at' => now(),
+        ]);
+
+        return $find;
     }
 
     public function folderView($detail, $category, $folder = null)

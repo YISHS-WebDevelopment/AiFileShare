@@ -37,6 +37,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/circles/{detail}/{category}/sharedFolder/{folder}', [FolderController::class, 'folderView'])->name('folder.index');
     Route::post('/folderManager/folderCreate/{detail}/{category}/{folder?}', [FolderController::class, 'folderCreate'])->name('folder.create');
     Route::get('/folder/delete/{id}', [FolderController::class, 'folderDelete'])->name('folder.delete');
+    Route::post('/folder/rename', [FolderController::class, 'folderRename'])->name('folder.rename');
 
     //파일
     Route::post('/file/create/{folder}', [FileController::class, 'fileCreate'])->name('file.create');
@@ -48,7 +49,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/board/{detail}/{category}',[BoardController::class, 'view'])->name('board.detail');
     Route::get('/board/{detail?}/{category}/{type}/write', [BoardController::class, 'writePage'])->name('board.all.write');
     Route::get('/board/{detail}/{category}/{type}/write', [BoardController::class, 'writePage'])->name('board.circles.write');
-
     Route::post('/board/{detail?}/{category}/{type}/write',[BoardController::class, 'writeAction'])->name('board.all.write.action');
     Route::post('/board/{detail}/{category}/{type}/write',[BoardController::class, 'writeAction'])->name('board.circles.write.action');
     Route::get('/board/{id}',[BoardController::class, 'detailView'])->name('board.detail.view');
@@ -63,6 +63,4 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/admin/folder/manage',[\App\Http\Controllers\FolderController::class,'manage_index'])->name('folder_manage.page');
     Route::get('/admin/board/manage',[\App\Http\Controllers\BoardController::class,'manage_index'])->name('board_manage.page');
     Route::delete('/admin/folder/folderDel',[\App\Http\Controllers\FolderController::class,'folderDelete'])->name('admin.folder.delete');
-
-
 });

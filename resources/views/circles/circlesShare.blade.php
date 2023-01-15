@@ -2,6 +2,30 @@
 
 @section('script')
     <script src="{{asset('/public/js/circles/folder.js')}}"></script>
+    <script>
+        $(document)
+            .on('click', '#rename-btn', function() {
+                const rename = $('#rename');
+                $.ajax({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    url : '{{route('folder.rename')}}',
+                    type : 'post',
+                    data : {'id' : rename.attr('data-id'), 'title' : $('#rename-modal #folder-input').val()},
+                    success : function(res) {
+                        if(!res) return alert('중복되는 폴더 이름이 있습니다.');
+
+                        $('#rename-modal').modal('hide');
+                        $(`#folder_${res.id}`).html(res.title);
+
+                    },
+                    error : function(res) {
+                        console.log(res);
+                    }
+                })
+            })
+    </script>
 @endsection
 @section('style')
     <link rel="stylesheet" href="{{asset('/public/css/folder/folder.css')}}">
@@ -88,14 +112,19 @@
                     <td>{{$folder->user->student_id}}{{$folder->user->username}}</td>
                     <td>
                         <div class="dropdown show">
-                            <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
+                            <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                               data-toggle="dropdown"
                                aria-haspopup="true" aria-expanded="false">
                             </a>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <a class="dropdown-item" href="#" id="rename" data-toggle="modal"
+                                   data-target="#rename-modal" data-title="{{$folder->title}}"
+                                   data-id="{{$folder->id}}">이름 바꾸기</a>
                                 <a class="dropdown-item" href="#">복사</a>
                                 <a class="dropdown-item" href="#">다운(ZIP)</a>
                                 <form action="">
-                                    <a class="dropdown-item" href="{{route('folder.delete',[$folder->id])}}" onclick="return confirm('정말 삭제하시겠습니까? 하부 폴더와 파일들이 모두 삭제됩니다.')">삭제</a>
+                                    <a class="dropdown-item" href="{{route('folder.delete',[$folder->id])}}"
+                                       onclick="return confirm('정말 삭제하시겠습니까? 하부 폴더와 파일들이 모두 삭제됩니다.')">삭제</a>
                                 </form>
                             </div>
                         </div>
@@ -142,6 +171,25 @@
                     </div>
                 </form>
 
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="rename-modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header d-flex justify-content-between align-items-center">
+                    <h4 class="modal-title">이름 바꾸기</h4>
+                    <span class="font-weight-bold" style="cursor: pointer;font-size: 1.2rem"
+                          data-dismiss="modal">X</span>
+                </div>
+                <div class="modal-body">
+                    <input type="text" id="folder-input" placeholder="폴더 이름을 입력해주세요." autofocus name="title"
+                           class="form-control">
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="submit" id="rename-btn">바꾸기</button>
+                </div>
             </div>
         </div>
     </div>

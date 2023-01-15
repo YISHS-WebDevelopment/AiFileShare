@@ -30,7 +30,7 @@ class FileController extends Controller
                 'path' => $find->path."/".$file_data['name'],
                 'folder_id' => $find['id'],
                 'size' => $request->file->getSize(),
-                'extension' => $request->file->getClientOriginalExtension(),
+                'extension' => $request->file->extension(),
             ]);
             $this->folderSizeUpdate($find->id, $request->file->getSize(), 'create');
             $this->whenCreateOrDelete();
