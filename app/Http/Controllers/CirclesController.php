@@ -9,7 +9,6 @@ class CirclesController extends Controller
 {
     public function view(Circle $circle)
     {
-
         return view('circles/circlesPage',compact(['circle']));
 
     }
