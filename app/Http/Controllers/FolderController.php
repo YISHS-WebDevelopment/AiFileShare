@@ -46,6 +46,7 @@ class FolderController extends Controller
             ]);
             Storage::makeDirectory('circles/'.$detail."/".$category."/".$request->title);
         }
+
         return back();
     }
 
@@ -60,8 +61,8 @@ class FolderController extends Controller
         }
 
         Storage::deleteDirectory($find->path);
-        $this->sumSizeUpdate(Folder::where('folder_id',$find->folder_id)->first(), 0);
         $find->delete();
+        $this->whenCreateOrDelete();
 
         return back()->with('msg', '삭제되었습니다.');
     }
