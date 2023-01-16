@@ -14,6 +14,7 @@
                     type : 'post',
                     data : {'id' : rename.attr('data-id'), 'title' : $('#rename-modal #folder-input').val()},
                     success : function(res) {
+                        rename.attr('data-title', res.title);
                         if(!res) return alert('중복되는 폴더 이름이 있습니다.');
 
                         $('#rename-modal').modal('hide');
@@ -126,8 +127,8 @@
                                 <a class="dropdown-item" href="#" id="rename" data-toggle="modal"
                                    data-target="#rename-modal" data-title="{{$folder->title}}"
                                    data-id="{{$folder->id}}">이름 바꾸기</a>
-                                <a class="dropdown-item" href="#">복사</a>
-                                <a class="dropdown-item" href="#">다운(ZIP)</a>
+                                <a class="dropdown-item" href="#">다음으로 이동</a>
+                                <a class="dropdown-item" href="{{route('folder.zip.down',[$folder->id])}}">다운(ZIP)</a>
                                 <a class="dropdown-item" href="{{route('folder.delete',[$folder->id])}}" onclick="return confirm('정말 삭제하시겠습니까? 하부 폴더와 파일들이 모두 삭제됩니다.')">삭제</a>
                             </div>
                         </div>
@@ -149,7 +150,7 @@
                                aria-haspopup="true" aria-expanded="false">
                             </a>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                <a class="dropdown-item" href="#">복사</a>
+                                <a class="dropdown-item" href="#">다음으로 이동</a>
                                 <a class="dropdown-item" href="{{route('file.download',[$file->id])}}">다운로드</a>
                                 <a class="dropdown-item" href="{{route('file.delete',[$file->id])}}" onclick="return confirm('정말 삭제하시겠습니까?')">삭제</a>
                             </div>

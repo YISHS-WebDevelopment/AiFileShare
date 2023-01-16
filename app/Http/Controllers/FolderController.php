@@ -22,8 +22,8 @@ class FolderController extends Controller
     {
         if (!is_null($folder)) {
             $find = Folder::where('url', $folder)->first();
-            foreach(Folder::where('folder_id', $find->id)->get() as $item) {
-                if($request->title === $item->title) return back()->with('msg', '중복되는 폴더 이름이 있습니다.');
+            foreach (Folder::where('folder_id', $find->id)->get() as $item) {
+                if ($request->title === $item->title) return back()->with('msg', '중복되는 폴더 이름이 있습니다.');
             }
             $cfolder = Folder::create([
                 'title' => $request->title,
@@ -38,8 +38,8 @@ class FolderController extends Controller
 
             $this->rootIdUpdate(Folder::where('url', $cfolder->url)->first(), $cfolder);
         } else {
-            foreach(Folder::where('folder_id', null)->get() as $item) {
-                if($request->title === $item->title) return back()->with('msg', '중복되는 폴더 이름이 있습니다.');
+            foreach (Folder::where('folder_id', null)->get() as $item) {
+                if ($request->title === $item->title) return back()->with('msg', '중복되는 폴더 이름이 있습니다.');
             }
             $cfolder = Folder::create([
                 'title' => $request->title,
@@ -86,15 +86,15 @@ class FolderController extends Controller
     {
         $find = Folder::find($request->id);
 
-        foreach(Folder::where('folder_id', $find->folder_id)->get() as $folder) {
-            if($folder->title === $request->title) return false;
+        foreach (Folder::where('folder_id', $find->folder_id)->get() as $folder) {
+            if ($folder->title === $request->title) return false;
         }
 
         $explode = explode('/', $find->path);
         $explode[count($explode) - 1] = $request->title;
         $path = join("/", $explode);
 
-        Storage::move($find->path,$path);
+        Storage::move($find->path, $path);
 
         $find->update([
             'title' => $request->title,
@@ -104,6 +104,27 @@ class FolderController extends Controller
 
         return $find;
     }
+
+    public function folderZipDown($id)
+    {
+        $folder = Folder::find($id);
+
+        $zip = new \ZipArchive();
+        $fileName = 'zipFile.zip';
+        if ($zip->open(storage_path('app/').$folder->path."/".$fileName, \ZipArchive::CREATE)== TRUE)
+        {
+            $files = Storage::allFiles($folder->path);
+            foreach ($files as $key => $value){
+                $relativeName = basename($value);
+                $zip->addFile($value, $relativeName);
+            }
+            $zip->close();
+        }
+
+        return Storage::download($fileName);
+
+    }
+
 
     public function folderView($detail, $category, $folder = null)
     {
