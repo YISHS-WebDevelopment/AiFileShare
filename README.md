@@ -1,5 +1,5 @@
 <div align="center"> 
-<img src="https://capsule-render.vercel.app/api?type=waving&color=auto&height=250&section=header&text=AI디자인과&fontSize=90" />
+<a href="http://ai-design.or.kr/"><img src="https://capsule-render.vercel.app/api?type=waving&color=auto&height=250&section=header&text=AI디자인과&fontSize=90" /></a>
     <h3>
     여수정보과학고등학교
     <br>
