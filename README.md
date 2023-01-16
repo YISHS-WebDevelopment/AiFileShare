@@ -1,5 +1,5 @@
 <div align="center"> 
-<img src="https://capsule-render.vercel.app/api?type=waving&color=auto&height=300&section=header&text=AI디자인과&fontSize=90&fontAlignY=38&desc=웹디자인 및 개발, 마루한DG, 3D COI(코이), 뚝딱뚝딱 CAD&descAlignY=57"/>
+<img src="https://capsule-render.vercel.app/api?type=waving&color=auto&height=250&section=header&text=AI디자인과&fontSize=90" />
     <h3>
     여수정보과학고등학교
     <br>
