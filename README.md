@@ -1,5 +1,5 @@
 <div align="center"> 
-<img src="https://capsule-render.vercel.app/api?type=waving&color=auto&height=300&section=header&text=AI디자인과&fontSize=90&animation=fadeIn&fontAlignY=38&desc=웹디자인 및 개발, 마루한DG, 3D COI(코이), 뚝딱뚝딱 CAD&descAlignY=57&descAlign=62" />
+<img src="https://capsule-render.vercel.app/api?type=waving&color=auto&height=300&section=header&text=AI디자인과&fontSize=90&animation=fadeIn&fontAlignY=38&desc=웹디자인 및 개발, 마루한DG, 3D COI(코이), 뚝딱뚝딱 CAD&descAlignY=57&descAlign=62"/>
     <h3>
     여수정보과학고등학교
     <br>
@@ -25,7 +25,7 @@
     <p>
     ↓↓개발중인 기능↓↓
     <br>
-    (<img src="https://img.shields.io/badge/O-green?style=flat-square&logo=로고명&logoColor=로고색"/>완료,<img src="https://img.shields.io/badge/X-red?style=flat-square&logo=로고명&logoColor=로고색"/>예정,<img src="https://img.shields.io/badge/△-yellow?style=flat-square&logo=로고명&logoColor=로고색"/>현재진행중)
+    (<img src="https://img.shields.io/badge/O-green?style=flat-square&logo=&logoColor="/>완료,<img src="https://img.shields.io/badge/X-red?style=flat-square&logo=&logoColor="/>예정,<img src="https://img.shields.io/badge/△-yellow?style=flat-square&logo=&logoColor="/>현재진행중)
     </p>
     <hr>
     <h4>가입</h4>
@@ -33,66 +33,66 @@
     <br>
     (동아리에 가입했는지 인증 기능을 아직 생각 못함)
     <br>
-    -사칭방지로 학번 중복체크(<img src="https://img.shields.io/badge/O-green?style=flat-square&logo=로고명&logoColor=로고색"/>)
+    -사칭방지로 학번 중복체크(<img src="https://img.shields.io/badge/O-green?style=flat-square&logo=&logoColor="/>)
     <hr>
     <h4>공유폴더, 게시판(공통사항)</h4>
-    -각 동아리와 학년별로 공유폴더,게시판이 존재(<img src="https://img.shields.io/badge/O-green?style=flat-square&logo=로고명&logoColor=로고색"/>)
+    -각 동아리와 학년별로 공유폴더,게시판이 존재(<img src="https://img.shields.io/badge/O-green?style=flat-square&logo=&logoColor="/>)
     <br>
-    -자신이 가입할 때 등록한 동아리 외에 다른 동아리 페이지 못 봄(<img src="https://img.shields.io/badge/O-green?style=flat-square&logo=로고명&logoColor=로고색"/>)
+    -자신이 가입할 때 등록한 동아리 외에 다른 동아리 페이지 못 봄(<img src="https://img.shields.io/badge/O-green?style=flat-square&logo=&logoColor="/>)
     <br>
-    -자신이 가입할 때 등록한 학년 외에 다른 학년 페이지 못 봄(<img src="https://img.shields.io/badge/O-green?style=flat-square&logo=로고명&logoColor=로고색"/>)
+    -자신이 가입할 때 등록한 학년 외에 다른 학년 페이지 못 봄(<img src="https://img.shields.io/badge/O-green?style=flat-square&logo=&logoColor="/>)
     <br>
-    -등록 12시간 이내이면 'new' 표시 띄워주기(<img src="https://img.shields.io/badge/X-red?style=flat-square&logo=로고명&logoColor=로고색"/>)
+    -등록 12시간 이내이면 'new' 표시 띄워주기(<img src="https://img.shields.io/badge/X-red?style=flat-square&logo=&logoColor="/>)
     <hr>
     <h4>공유 폴더</h4>
-    -폴더와 파일을 만들 수 있음(파일은 무엇이든지 다 됨)(<img src="https://img.shields.io/badge/O-green?style=flat-square&logo=로고명&logoColor=로고색"/>)
+    -폴더와 파일을 만들 수 있음(파일은 무엇이든지 다 됨)(<img src="https://img.shields.io/badge/O-green?style=flat-square&logo=&logoColor="/>)
     <br>
-    -파일 다운로드(<img src="https://img.shields.io/badge/O-green?style=flat-square&logo=로고명&logoColor=로고색"/>)
+    -파일 다운로드(<img src="https://img.shields.io/badge/O-green?style=flat-square&logo=&logoColor="/>)
     <br>
-    -폴더 다운로드(ZIP)(<img src="https://img.shields.io/badge/△-yellow?style=flat-square&logo=로고명&logoColor=로고색"/>)
+    -폴더 다운로드(ZIP)(<img src="https://img.shields.io/badge/△-yellow?style=flat-square&logo=&logoColor="/>)
     <br>
-    -폴더 이름바꾸기(<img src="https://img.shields.io/badge/O-green?style=flat-square&logo=로고명&logoColor=로고색"/>)
+    -폴더 이름바꾸기(<img src="https://img.shields.io/badge/O-green?style=flat-square&logo=&logoColor="/>)
     <br>
-    -폴더와 파일 용량 보여주기(<img src="https://img.shields.io/badge/O-green?style=flat-square&logo=로고명&logoColor=로고색"/>)
+    -폴더와 파일 용량 보여주기(<img src="https://img.shields.io/badge/O-green?style=flat-square&logo=&logoColor="/>)
     <br>
-    -폴더와 파일 이동(<img src="https://img.shields.io/badge/X-red?style=flat-square&logo=로고명&logoColor=로고색"/>)
+    -폴더와 파일 이동(<img src="https://img.shields.io/badge/X-red?style=flat-square&logo=&logoColor="/>)
     <br>
-    -폴더와 파일 삭제(<img src="https://img.shields.io/badge/O-green?style=flat-square&logo=로고명&logoColor=로고색"/>)
+    -폴더와 파일 삭제(<img src="https://img.shields.io/badge/O-green?style=flat-square&logo=&logoColor="/>)
     <br>
-    -이름, 날짜, 용량 순으로 정렬 가능(<img src="https://img.shields.io/badge/X-red?style=flat-square&logo=로고명&logoColor=로고색"/>)
+    -이름, 날짜, 용량 순으로 정렬 가능(<img src="https://img.shields.io/badge/X-red?style=flat-square&logo=&logoColor="/>)
     <br>
-    -파일 확장자에 따른 아이콘 보여주기(<img src="https://img.shields.io/badge/X-red?style=flat-square&logo=로고명&logoColor=로고색"/>)
+    -파일 확장자에 따른 아이콘 보여주기(<img src="https://img.shields.io/badge/X-red?style=flat-square&logo=&logoColor="/>)
     <hr>
     <h4>게시판</h4>
-    -모든 동아리, 모든 학년들이 다 볼 수 있는 전체 게시판과 동아리 게시판이 존재(<img src="https://img.shields.io/badge/O-green?style=flat-square&logo=로고명&logoColor=로고색"/>)
+    -모든 동아리, 모든 학년들이 다 볼 수 있는 전체 게시판과 동아리 게시판이 존재(<img src="https://img.shields.io/badge/O-green?style=flat-square&logo=&logoColor="/>)
     <br>
-    -글 쓸 때 summernote 에디터 사용(<img src="https://img.shields.io/badge/O-green?style=flat-square&logo=로고명&logoColor=로고색"/>)
+    -글 쓸 때 summernote 에디터 사용(<img src="https://img.shields.io/badge/O-green?style=flat-square&logo=&logoColor="/>)
     <br>
-    -댓글 기능(<img src="https://img.shields.io/badge/X-red?style=flat-square&logo=로고명&logoColor=로고색"/>)
+    -댓글 기능(<img src="https://img.shields.io/badge/X-red?style=flat-square&logo=&logoColor="/>)
     <br>
-    -좋아요 기능(<img src="https://img.shields.io/badge/O-green?style=flat-square&logo=로고명&logoColor=로고색"/>)
+    -좋아요 기능(<img src="https://img.shields.io/badge/O-green?style=flat-square&logo=&logoColor="/>)
     <br>
-    -조회수 기능(<img src="https://img.shields.io/badge/O-green?style=flat-square&logo=로고명&logoColor=로고색"/>)
+    -조회수 기능(<img src="https://img.shields.io/badge/O-green?style=flat-square&logo=&logoColor="/>)
     <br>
-    -최신, 좋아요, 조회 순으로 정렬 가능(<img src="https://img.shields.io/badge/O-green?style=flat-square&logo=로고명&logoColor=로고색"/>)
+    -최신, 좋아요, 조회 순으로 정렬 가능(<img src="https://img.shields.io/badge/O-green?style=flat-square&logo=&logoColor="/>)
     <hr>
     <h4>Admin</h4>
-    -모든 파일, 폴더 관리(수정, 삭제)(<img src="https://img.shields.io/badge/X-red?style=flat-square&logo=로고명&logoColor=로고색"/>)
+    -모든 파일, 폴더 관리(수정, 삭제)(<img src="https://img.shields.io/badge/X-red?style=flat-square&logo=&logoColor="/>)
     <br>
-    -모든 게시글 관리(수정, 삭제)(<img src="https://img.shields.io/badge/O-green?style=flat-square&logo=로고명&logoColor=로고색"/>)
+    -모든 게시글 관리(수정, 삭제)(<img src="https://img.shields.io/badge/O-green?style=flat-square&logo=&logoColor="/>)
     <br>
-    -게시판 공지사항 등록(<img src="https://img.shields.io/badge/X-red?style=flat-square&logo=로고명&logoColor=로고색"/>)
+    -게시판 공지사항 등록(<img src="https://img.shields.io/badge/X-red?style=flat-square&logo=&logoColor="/>)
     <br>
-    -모든 학생(유저) 정보 관리(수정, 삭제)(<img src="https://img.shields.io/badge/X-red?style=flat-square&logo=로고명&logoColor=로고색"/>)
+    -모든 학생(유저) 정보 관리(수정, 삭제)(<img src="https://img.shields.io/badge/X-red?style=flat-square&logo=&logoColor="/>)
     <hr>
     <h4>My페이지</h4>
-    -자신이 등록한 폴더, 파일, 게시글이 한 눈에 보임(<img src="https://img.shields.io/badge/X-red?style=flat-square&logo=로고명&logoColor=로고색"/>)
+    -자신이 등록한 폴더, 파일, 게시글이 한 눈에 보임(<img src="https://img.shields.io/badge/X-red?style=flat-square&logo=&logoColor="/>)
     <br>
-    -자신이 등록한 폴더, 파일, 게시글 관리(수정, 삭제)(<img src="https://img.shields.io/badge/X-red?style=flat-square&logo=로고명&logoColor=로고색"/>)
+    -자신이 등록한 폴더, 파일, 게시글 관리(수정, 삭제)(<img src="https://img.shields.io/badge/X-red?style=flat-square&logo=&logoColor="/>)
     <br>
-    -프로필 사진 등록 가능(<img src="https://img.shields.io/badge/△-yellow?style=flat-square&logo=로고명&logoColor=로고색"/>)
+    -프로필 사진 등록 가능(<img src="https://img.shields.io/badge/△-yellow?style=flat-square&logo=&logoColor="/>)
     <br>
-    -자기 소개글 작성 가능(<img src="https://img.shields.io/badge/△-yellow?style=flat-square&logo=로고명&logoColor=로고색"/>)
+    -자기 소개글 작성 가능(<img src="https://img.shields.io/badge/△-yellow?style=flat-square&logo=&logoColor="/>)
     <hr>
     <h4>설계</h4>
     -하위 폴더나 파일들은 상위 폴더의 DB에 저장 된 암호화 url로 접근 
