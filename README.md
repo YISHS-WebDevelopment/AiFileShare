@@ -104,6 +104,9 @@
     <br>
     -파일을 업로드 할 때 post제한이 xampp_local 환경에서는 40MB가 최대라서 40MB 이상을 테스트 못해봄
     <hr>
+    <h4>ERD</h4>
+    ![AiFileShare_ERD](https://user-images.githubusercontent.com/83466891/212934964-48519531-19ae-4967-8a15-714c3be36c6d.png)
+    <hr>
     <h4>참여자</h4>
     - <a href="https://github.com/shb050716">손현빈</a>
     <br>
