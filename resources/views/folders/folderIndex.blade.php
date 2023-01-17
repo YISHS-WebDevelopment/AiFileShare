@@ -44,9 +44,9 @@
                         <h1><a href="{{route('circles.share',[$detail,$category])}}">..</a>/{{$find['title']}}</h1>
                     @else
                         @if(!is_null($path))
-                            <h1><a href="{{route('folder.index',[$parent['circle_id'],$category,$parent['url']])}}">..</a>{{$path}}/{{$find['title']}}</h1>
+                            <h1><a href="{{route('folder.index',[$parent->circle->detail,$category,$parent['url']])}}">..</a>{{$path}}/{{$find['title']}}</h1>
                         @else
-                            <h1><a href="{{route('folder.index',[$parent['circle_id'],$category,$parent['url']])}}">..</a>{{$path}}/{{$find['title']}}</h1>
+                            <h1><a href="{{route('folder.index',[$parent->circle->detail,$category,$parent['url']])}}">..</a>{{$path}}/{{$find['title']}}</h1>
                         @endif
                     @endif
                 </div>

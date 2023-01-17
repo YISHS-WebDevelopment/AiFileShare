@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateBoardsViewsTable extends Migration
+class CreateDirsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,10 @@ class CreateBoardsViewsTable extends Migration
      */
     public function up()
     {
-        Schema::create('boards_views', function (Blueprint $table) {
+        Schema::create('dirs', function (Blueprint $table) {
             $table->id();
-            $table->string('board_id');
-            $table->string('user_id');
-            $table->boolean('views')->default(0);
+            $table->string('name');
+            $table->string('dir');
         });
     }
 
@@ -28,6 +27,6 @@ class CreateBoardsViewsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('boards_views');
+        Schema::dropIfExists('dirs');
     }
 }

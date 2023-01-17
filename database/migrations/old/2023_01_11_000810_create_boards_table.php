@@ -15,15 +15,15 @@ class CreateBoardsTable extends Migration
     {
         Schema::create('boards', function (Blueprint $table) {
             $table->id();
-            $table->string('user_id');
+            $table->foreignId('user_id')->constrained();
             $table->string('circle_check');
             $table->string('category');
             $table->string('title');
             $table->text('contents');
             $table->string('path')->nullable();
-            $table->timestamp('created_at')->useCurrent();
             $table->bigInteger('views')->default(0);
             $table->bigInteger('like')->default(0);
+            $table->timestamp('created_at')->useCurrent();
         });
     }
 

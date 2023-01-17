@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateBoardsImagesTable extends Migration
+class CreateFilesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,15 @@ class CreateBoardsImagesTable extends Migration
      */
     public function up()
     {
-        Schema::create('boards_images', function (Blueprint $table) {
+        Schema::create('files', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained();
+            $table->foreignId('folder_id')->constrained();
+            $table->string('title');
             $table->string('path');
-            $table->bigInteger('board_id');
+            $table->bigInteger('size');
+            $table->string('extension');
+            $table->dateTime('created_at')->useCurrent();
         });
     }
 
@@ -27,6 +32,6 @@ class CreateBoardsImagesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('boards_images');
+        Schema::dropIfExists('files');
     }
 }

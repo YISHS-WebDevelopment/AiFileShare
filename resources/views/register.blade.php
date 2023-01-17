@@ -7,7 +7,7 @@
             <hr>
             <div>
                 <p>Id</p>
-                <input type="text" name="id" class="form-control" placeholder="Id를 입력해주세요." required>
+                <input type="text" name="auth_id" class="form-control" placeholder="Id를 입력해주세요." required>
             </div>
             <hr>
             <div>

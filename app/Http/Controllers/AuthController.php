@@ -23,7 +23,7 @@ class AuthController extends Controller
     {
         $request->validate(
             [
-                'id' => ['unique:users','regex:/^[a-zA-Z\s]+/','min:4'],
+                'auth_id' => ['unique:users','regex:/^[a-zA-Z\s]+/','min:4'],
                 'password' => 'min:3',
                 'username' => ['regex:/^[가-힣\s]+/','min:2'],
                 'grade' => 'required',
@@ -31,9 +31,9 @@ class AuthController extends Controller
                 'circle_id' => 'required',
             ],
             [
-                'id.unique' => '이미 등록된 아이디입니다.',
-                'id.regex' => '아이디는 영어만 입력가능합니다.',
-                'id.min' => '아이디는 최소 4자 이상 입력해주세요.',
+                'auth_id.unique' => '이미 등록된 아이디입니다.',
+                'auth_id.regex' => '아이디는 영어만 입력가능합니다.',
+                'auth_id.min' => '아이디는 최소 4자 이상 입력해주세요.',
                 'password.min' => '비밀번호는 최소 3자 이상 입력해주세요.',
                 'username.regex' => '이름은 한글만 입력 가능합니다.',
                 'username.min' => '이름은 최소 두 글자 이상 입력해주세요.',
@@ -48,10 +48,10 @@ class AuthController extends Controller
         if (User::where('student_id', $student_id)->count() > 0) return back()->withErrors('이미 등록된 학번입니다.');
 
         User::create([
-            'id' => $request->id,
+            'auth_id' => $request->auth_id,
             'password' => $request->password,
             'username' => $request->username,
-            'circle_id' => $request->circle_id,
+            'circle_id' => Circle::where('detail', $request->circle_id)->first()->id,
             'grade_id' => $request->grade,
             'student_id' => $student_id
         ]);
@@ -61,7 +61,7 @@ class AuthController extends Controller
 
     public function loginAction(Request $request)
     {
-        $user = User::where('id', $request->id)->first();
+        $user = User::where('auth_id', $request->auth_id)->first();
         if(!$user || $user->password !== $request->password) return back()->withErrors('아이디 또는 비밀번호가 일치하지 않습니다.');
         Auth::login($user);
         return redirect()->route('index')->with('msg', $user->username.'님 환영합니다.');
