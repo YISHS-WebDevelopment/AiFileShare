@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCirclesTable extends Migration
+class CreateBoardsLikesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,11 @@ class CreateCirclesTable extends Migration
      */
     public function up()
     {
-        Schema::create('circles', function (Blueprint $table) {
-            $table->string('circle')->primary();
-            $table->string('name');
+        Schema::create('boards_likes', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('board_id')->constrained();
+            $table->foreignId('user_id')->constrained();
+            $table->boolean('like')->default(0);
         });
     }
 
@@ -26,6 +28,6 @@ class CreateCirclesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('circles');
+        Schema::dropIfExists('boards_likes');
     }
 }

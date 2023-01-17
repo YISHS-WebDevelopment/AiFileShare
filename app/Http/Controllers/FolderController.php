@@ -28,11 +28,12 @@ class FolderController extends Controller
             $cfolder = Folder::create([
                 'title' => $request->title,
                 'user_id' => auth()->user()->id,
-                'circle_id' => $detail,
+                'circle_id' => Circle::where('detail',$detail)->first()->id,
                 'url' => str_replace('/', '', Hash::make($request->title)),
                 'folder_id' => $find['id'],
-                'grade_id' => $category,
+                'category' => $category,
                 'path' => $find->path . "/" . $request->title,
+                'created_at' => now(),
             ]);
             Storage::makeDirectory($find->path . "/" . $request->title);
 
@@ -44,10 +45,11 @@ class FolderController extends Controller
             $cfolder = Folder::create([
                 'title' => $request->title,
                 'user_id' => auth()->user()->id,
-                'circle_id' => $detail,
+                'circle_id' => Circle::where('detail',$detail)->first()->id,
                 'url' => str_replace('/', '', Hash::make($request->title)),
-                'grade_id' => $category,
+                'category' => $category,
                 'path' => 'circles/' . $detail . "/" . $category . "/" . $request->title,
+                'created_at' => now(),
             ]);
             Storage::makeDirectory('circles/' . $detail . "/" . $category . "/" . $request->title);
         }
@@ -86,6 +88,7 @@ class FolderController extends Controller
     {
         $find = Folder::find($request->id);
 
+
         foreach (Folder::where('folder_id', $find->folder_id)->get() as $folder) {
             if ($folder->title === $request->title) return false;
         }
@@ -99,7 +102,7 @@ class FolderController extends Controller
         $find->update([
             'title' => $request->title,
             'path' => $path,
-            'created_at' => now(),
+            'updated_at' => now(),
         ]);
 
         return $find;

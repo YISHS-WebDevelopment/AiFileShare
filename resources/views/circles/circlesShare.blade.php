@@ -100,7 +100,7 @@
             </tr>
             </thead>
             <tbody>
-            @foreach(\App\Folder::where('folder_id',null)->where('circle_id',$detail)->where('grade_id', $category)->get() as $folder)
+            @foreach(\App\Folder::where(['folder_id' => null, 'circle_id' => $circle_id, 'category' => $category])->get() as $folder)
                 <tr>
                     <td><img src="{{asset('/public/images/folder_icon.svg')}}" class="folder-icon" alt="folder_icon">
                     </td>

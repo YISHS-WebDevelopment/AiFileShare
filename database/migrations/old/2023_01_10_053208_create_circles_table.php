@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateBoardsLikesTable extends Migration
+class CreateCirclesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,10 @@ class CreateBoardsLikesTable extends Migration
      */
     public function up()
     {
-        Schema::create('boards_likes', function (Blueprint $table) {
+        Schema::create('circles', function (Blueprint $table) {
             $table->id();
-            $table->string('board_id');
-            $table->string('user_id');
-            $table->boolean('like')->default(0);
+            $table->string('detail');
+            $table->string('name');
         });
     }
 
@@ -28,6 +27,6 @@ class CreateBoardsLikesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('boards_likes');
+        Schema::dropIfExists('circles');
     }
 }

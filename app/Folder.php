@@ -20,6 +20,11 @@ class Folder extends Model
         return $this->hasOne(User::class, 'id', 'user_id');
     }
 
+    public function circle()
+    {
+        return $this->belongsTo(Circle::class);
+    }
+
     public function childFolders($folder)
     {
         if (!is_null($folder)) {

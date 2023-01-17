@@ -14,11 +14,12 @@ class CreateUsersTable extends Migration
     public function up()
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->string('id')->primary();
+            $table->id();
+//            $table->foreignId('circle_id')->constrained();
+            $table->string('auth_id');
             $table->string('password');
             $table->string('username');
-            $table->string('circle_id');
-            $table->string('grade_id');
+            $table->integer('grade');
             $table->string('student_id');
             $table->string('type')->default('user');
         });
