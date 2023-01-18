@@ -12,4 +12,8 @@ class User extends Authenticatable
     protected $guarded = [];
     protected $keyType = 'string';
     public $timestamps = false;
+    public function boards (){
+
+        return $this->hasMany(Board::class);
+    }
 }

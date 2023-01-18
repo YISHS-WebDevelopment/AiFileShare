@@ -23,7 +23,6 @@ class initController extends Controller
         DB::table('files')->truncate();
         DB::table('circles')->truncate();
         DB::table('boards')->truncate();
-        DB::table('admins')->truncate();
         DB::table('boards_views')->truncate();
         DB::table('boards_likes')->truncate();
         DB::table('dirs')->truncate();
@@ -90,10 +89,14 @@ class initController extends Controller
             'name' => '캐드'
         ]);
 
-        Admin::create([
+        User::create([
             'id' => 'admin',
-            'password' => Hash::make('rhtlgustlstmdqlsrlawhddnjsshtmdwns'),
-            'name' => '관리자다'
+            'password' => 'rhtlgustlstmdqlsrlawhddnjsshtmdwns',
+            'username' => '관리자다',
+            'circle_id' => null,
+            'grade_id' => null,
+            'student_id' => null,
+            'type' => 'admin'
         ]);
 
         for ($i = 1; $i <= 3; $i++) {

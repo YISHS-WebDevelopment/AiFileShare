@@ -23,14 +23,13 @@ class FileController extends Controller
             $ext = $tmp[count($tmp) - 1];
             $img = ['jpg', 'jpeg', 'jfif', 'png', 'svg', 'gif'];
             $request->file->storeAs($find->path, $file_data['name']);
-
             File::create([
                 'user_id' => auth()->user()->id,
                 'title' => $file_data['name'],
                 'path' => $find->path."/".$file_data['name'],
                 'folder_id' => $find['id'],
                 'size' => $request->file->getSize(),
-                'extension' => $request->file->extension(),
+                'extension' => $ext,
             ]);
             $this->folderSizeUpdate($find->id, $request->file->getSize(), 'create');
             $this->whenCreateOrDelete();

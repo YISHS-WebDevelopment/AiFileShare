@@ -17,9 +17,9 @@ class CreateUsersTable extends Migration
             $table->string('id')->primary();
             $table->string('password');
             $table->string('username');
-            $table->string('circle_id');
-            $table->string('grade_id');
-            $table->string('student_id');
+            $table->string('circle_id')->nullable();
+            $table->string('grade_id')->nullable();
+            $table->string('student_id')->nullable();
             $table->string('type')->default('user');
         });
     }
