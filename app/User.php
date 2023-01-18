@@ -13,9 +13,15 @@ class User extends Authenticatable
     protected $guarded = [];
     protected $keyType = 'string';
     public $timestamps = false;
+<<<<<<< HEAD
+    public function boards (){
+
+        return $this->hasMany(Board::class);
+=======
 
     public function circle()
     {
         return $this->belongsTo(Circle::class);
+>>>>>>> master
     }
 }

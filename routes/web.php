@@ -64,4 +64,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/admin/folder/manage',[\App\Http\Controllers\FolderController::class,'manage_index'])->name('folder_manage.page');
     Route::get('/admin/board/manage',[\App\Http\Controllers\BoardController::class,'manage_index'])->name('board_manage.page');
     Route::delete('/admin/folder/folderDel',[\App\Http\Controllers\FolderController::class,'folderDelete'])->name('admin.folder.delete');
+
+//마이페이지
+    Route::get('/mypage/{user}',[\App\Http\Controllers\UserController::class,'mypageIndex'])->name('mypage.index');
 });

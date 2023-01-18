@@ -26,7 +26,6 @@ class initController extends Controller
         DB::table('files')->truncate();
         DB::table('circles')->truncate();
         DB::table('boards')->truncate();
-        DB::table('admins')->truncate();
         DB::table('boards_views')->truncate();
         DB::table('boards_likes')->truncate();
         DB::table('boards_images')->truncate();
@@ -98,10 +97,35 @@ class initController extends Controller
             'student_id' => '30504'
         ]);
 
+<<<<<<< HEAD
+        Circle::create([
+            'circle' => 'WebDesign',
+            'name' => '웹디자인'
+        ]);
+        Circle::create([
+            'circle' => 'GraphicDesign',
+            'name' => '그래픽디자인'
+        ]);
+        Circle::create([
+            'circle' => '3D',
+            'name' => '3D'
+        ]);
+        Circle::create([
+            'circle' => 'CAD',
+            'name' => '캐드'
+        ]);
+
+        User::create([
+=======
         Admin::create([
+>>>>>>> master
             'id' => 'admin',
-            'password' => Hash::make('rhtlgustlstmdqlsrlawhddnjsshtmdwns'),
-            'name' => '관리자다'
+            'password' => 'rhtlgustlstmdqlsrlawhddnjsshtmdwns',
+            'username' => '관리자다',
+            'circle_id' => null,
+            'grade_id' => null,
+            'student_id' => null,
+            'type' => 'admin'
         ]);
 
         for ($i = 1; $i <= 3; $i++) {

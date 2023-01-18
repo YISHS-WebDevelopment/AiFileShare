@@ -19,8 +19,14 @@ class CreateUsersTable extends Migration
             $table->string('auth_id');
             $table->string('password');
             $table->string('username');
+<<<<<<< HEAD:database/migrations/2014_10_12_000000_create_users_table.php
+            $table->string('circle_id')->nullable();
+            $table->string('grade_id')->nullable();
+            $table->string('student_id')->nullable();
+=======
             $table->integer('grade');
             $table->string('student_id');
+>>>>>>> master:database/migrations/old/2014_10_12_000000_create_users_table.php
             $table->string('type')->default('user');
         });
     }
