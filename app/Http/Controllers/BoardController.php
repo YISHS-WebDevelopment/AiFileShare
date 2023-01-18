@@ -21,7 +21,7 @@ class BoardController extends Controller
         else if ($sort === 'like') $board = $board->orderByDesc('like')->get();
         else $board = $board->orderByDesc('views')->get();
 
-        if ($category !== 'all' && auth()->user()->grade_id !== $category) return back()->with('msg', '다른 학년의 게시판은 볼 수 없습니다.');
+        if ($category != 'all' && auth()->user()->grade != $category) return back()->with('msg', '다른 학년의 게시판은 볼 수 없습니다.');
 
         return view('board/boardPage', compact(['detail', 'category', 'board', 'sort']));
     }

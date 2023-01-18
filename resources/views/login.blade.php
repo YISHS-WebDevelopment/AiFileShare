@@ -7,7 +7,7 @@
             <hr>
             <div>
                 <p>Id</p>
-                <input type="text" autofocus name="id" class="form-control" placeholder="아이디를 입력해주세요." required>
+                <input type="text" autofocus name="auth_id" class="form-control" placeholder="아이디를 입력해주세요." required>
             </div>
             <hr>
             <div>

@@ -15,16 +15,16 @@ class CreateFoldersTable extends Migration
     {
         Schema::create('folders', function (Blueprint $table) {
             $table->id();
-            $table->string('user_id');
+            $table->foreignId('user_id')->constrained();
+            $table->foreignId('circle_id')->constrained();
             $table->string('title');
-            $table->bigInteger('folder_id')->nullable();
+            $table->integer('folder_id')->nullable();
             $table->integer('root_id')->nullable();
-            $table->string('grade_id')->nullable();
-            $table->string('circle_id')->nullable();
-            $table->dateTime('created_at')->useCurrent();
+            $table->integer('grade')->nullable();
             $table->string('url')->nullable();
             $table->bigInteger('size')->default(0);
             $table->string('path');
+            $table->timestamps();
         });
     }
 

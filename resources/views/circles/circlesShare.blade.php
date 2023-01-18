@@ -14,6 +14,7 @@
                     type : 'post',
                     data : {'id' : rename.attr('data-id'), 'title' : $('#rename-modal #folder-input').val()},
                     success : function(res) {
+                        rename.attr('data-title', res.title);
                         if(!res) return alert('중복되는 폴더 이름이 있습니다.');
 
                         $('#rename-modal').modal('hide');
@@ -99,7 +100,7 @@
             </tr>
             </thead>
             <tbody>
-            @foreach(\App\Folder::where('folder_id',null)->where('circle_id',$detail)->where('grade_id', $category)->get() as $folder)
+            @foreach(\App\Folder::where(['folder_id' => null, 'circle_id' => $circle_id, 'category' => $category])->get() as $folder)
                 <tr>
                     <td><img src="{{asset('/public/images/folder_icon.svg')}}" class="folder-icon" alt="folder_icon">
                     </td>
@@ -120,8 +121,8 @@
                                 <a class="dropdown-item" href="#" id="rename" data-toggle="modal"
                                    data-target="#rename-modal" data-title="{{$folder->title}}"
                                    data-id="{{$folder->id}}">이름 바꾸기</a>
-                                <a class="dropdown-item" href="#">복사</a>
-                                <a class="dropdown-item" href="#">다운(ZIP)</a>
+                                <a class="dropdown-item" href="#">다음으로 이동</a>
+                                <a class="dropdown-item" href="{{route('folder.zip.down',[$folder->id])}}">다운(ZIP)</a>
                                 <form action="">
                                     <a class="dropdown-item" href="{{route('folder.delete',[$folder->id])}}"
                                        onclick="return confirm('정말 삭제하시겠습니까? 하부 폴더와 파일들이 모두 삭제됩니다.')">삭제</a>
