@@ -18,4 +18,8 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Circle::class);
     }
+    public function posts(){
+        return $this->hasMany(Board::class);
+    }
+
 }
