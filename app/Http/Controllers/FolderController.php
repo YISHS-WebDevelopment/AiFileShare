@@ -132,7 +132,7 @@ class FolderController extends Controller
         return $find;
     }
 
-    public function folderZipDown($id)
+    public function folderZipDown($detail,$category,$id)
     {
         $folder = Folder::find($id);
         $filePath = storage_path('app/');
@@ -144,8 +144,15 @@ class FolderController extends Controller
         }
 
         foreach(Storage::allFiles($folder->path) as $item) {
-            Storage::copy($item, basename($item));
-            $zip->addFile($filePath.$item, $item);
+            $copyPath = explode("/",$item);
+            $fileArr = end($copyPath);
+            if(is_null($folder->folder_id)) {
+                $folderArr = explode('circles/'.$detail."/".$category."/", $item);
+                $zip->addFile($filePath.$item, end($folderArr));
+            } else {
+                $folderArr = $copyPath[count($copyPath) - 2];
+                $zip->addFile($filePath.$item, $folderArr."/".$fileArr);
+            }
         }
 
         $zip->close();
