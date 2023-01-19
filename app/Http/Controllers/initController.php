@@ -116,30 +116,6 @@ class initController extends Controller
             }
         }
         Storage::deleteDirectory('circles');
-        foreach(Circle::all() as $circle) {
-            if($circle->detail !== 'all') {
-                Storage::makeDirectory('circles/'.$circle->detail.'/all');
-                Storage::makeDirectory('circles/'.$circle->detail.'/1');
-                Storage::makeDirectory('circles/'.$circle->detail.'/2');
-                Storage::makeDirectory('circles/'.$circle->detail.'/3');
-                Dir::create([
-                    'name' => $circle->detail.'/all',
-                    'dir' => 'circles/'.$circle->detail."/".'all',
-                ]);
-                Dir::create([
-                    'name' => $circle->detail.'/1',
-                    'dir' => 'circles/'.$circle->detail."/".'1',
-                ]);
-                Dir::create([
-                    'name' => $circle->detail.'/2',
-                    'dir' => 'circles/'.$circle->detail."/".'2',
-                ]);
-                Dir::create([
-                    'name' => $circle->detail.'/3',
-                    'dir' => 'circles/'.$circle->detail."/".'3',
-                ]);
-            }
-        }
 
         Schema::enableForeignKeyConstraints();
     }

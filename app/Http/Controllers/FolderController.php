@@ -107,14 +107,14 @@ class FolderController extends Controller
 
         //폴더이름 바뀐거 해당 폴더의 하위폴더들에 업데이트
         foreach (Storage::allDirectories($find->path) as $item) {
-             $folder = Folder::where('path', $item)->first();
-             $folderPathArr = explode("/", $item);
-             $folderPathArr[$folderPathIdx] = $request->title;
-             $path = join("/", $folderPathArr);
+            $folder = Folder::where('path', $item)->first();
+            $folderPathArr = explode("/", $item);
+            $folderPathArr[$folderPathIdx] = $request->title;
+            $path = join("/", $folderPathArr);
 
-             $folder->update([
-                 'path' => $path,
-             ]);
+            $folder->update([
+                'path' => $path,
+            ]);
         }
 
         $explode[count($explode) - 1] = $request->title;
@@ -132,33 +132,37 @@ class FolderController extends Controller
         return $find;
     }
 
-    public function folderZipDown($detail,$category,$id)
+    public function folderZipDown($detail, $category, $id)
     {
         $folder = Folder::find($id);
         $filePath = storage_path('app/');
         $zip = new \ZipArchive;
-        $fileName = time().'.zip';
 
-        if(!$zip->open($fileName, \ZipArchive::CREATE)) {
+        // zip 아카이브 생성하기 위한 고유값
+        $fileName = time() . '.zip';
+
+        // zip 아카이브 생성 여부 확인
+        if (!$zip->open($fileName, \ZipArchive::CREATE)) {
             exit("error");
         }
 
-        foreach(Storage::allFiles($folder->path) as $item) {
-            $copyPath = explode("/",$item);
-            $fileArr = end($copyPath);
-            if(is_null($folder->folder_id)) {
-                $folderArr = explode('circles/'.$detail."/".$category."/", $item);
-                $zip->addFile($filePath.$item, end($folderArr));
-            } else {
-                $folderArr = $copyPath[count($copyPath) - 2];
-                $zip->addFile($filePath.$item, $folderArr."/".$fileArr);
-            }
+        // addFile ( 파일이 존재하는 경로, 저장될 이름 )
+        foreach (Storage::allFiles($folder->path) as $item) {
+            $copyPath = explode("/", $item);
+            $findFolderIdx = array_search($folder->title, $copyPath);
+            array_splice($copyPath, 0, $findFolderIdx);
+            $copyPath = join("/", $copyPath);
+
+            $zip->addFile($filePath . $item, $copyPath);
         }
 
+        // 아카이브 닫아주기
         $zip->close();
 
-        $downZipName = $folder->title.'.zip';
+        // 다운로드 될 zip 파일명
+        $downZipName = $folder->title . '.zip';
 
+        // 생성한 zip 파일을 다운로드하기
         header("Content-type: application/zip");
         header("Content-Disposition: attachment; filename=$downZipName");
         readfile($fileName);
@@ -168,6 +172,7 @@ class FolderController extends Controller
 
     public function folderView($detail, $category, $folder = null)
     {
+        $pathArr = $this->getCurFolderPath(Folder::where('url',$folder)->first()->id, []);
         if (!is_null($folder)) {
             $find = Folder::where('url', $folder)->first();
             $files = $find->files->all();
@@ -200,6 +205,6 @@ class FolderController extends Controller
                 }
             }
         }
-        return view('folders/folderIndex', compact(['find', 'detail', 'category', 'files', 'parent', 'path']));
+        return view('folders/folderIndex', compact(['find', 'detail', 'category', 'files', 'parent', 'path', 'pathArr']));
     }
 }
