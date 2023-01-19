@@ -14,6 +14,7 @@
                     type : 'post',
                     data : {'id' : rename.attr('data-id'), 'title' : $('#rename-modal #folder-input').val()},
                     success : function(res) {
+                        console.log(res);
                         rename.attr('data-title', res.title);
                         if(!res) return alert('중복되는 폴더 이름이 있습니다.');
 
@@ -115,7 +116,11 @@
                     <td>
                         <a id="folder_{{$folder['id']}}" href="{{route('folder.index',[$detail,$category,$folder['url']])}}">{{$folder->title}}</a>
                     </td>
-                    <td>{{date('Y-m-d',strtotime($folder->created_at))}}</td>
+                    @if(is_null($folder->updated_at))
+                        <td>{{date('Y-m-d',strtotime($folder->created_at))}}</td>
+                    @else
+                        <td>{{date('Y-m-d',strtotime($folder->updated_at))}}</td>
+                    @endif
                     <td>{{$folder->sizeExplode($folder->size)}}</td>
                     <td>{{$folder->user->student_id}}{{$folder->user->username}}</td>
                     <td>

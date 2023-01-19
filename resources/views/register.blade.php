@@ -49,7 +49,9 @@
                 <select name="circle_id" id="circle-select" class="form-control">
                     <option value="">-----SELECT-----</option>
                     @foreach($circle->all() as $item)
-                        <option value="{{$item->circle}}">{{$item->circle}}</option>
+                        @if($item->detail !== 'all')
+                            <option value="{{$item->detail}}">{{$item->detail}}</option>
+                        @endif
                     @endforeach
                 </select>
             </div>

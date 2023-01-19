@@ -52,7 +52,7 @@ class AuthController extends Controller
             'password' => $request->password,
             'username' => $request->username,
             'circle_id' => Circle::where('detail', $request->circle_id)->first()->id,
-            'grade_id' => $request->grade,
+            'grade' => $request->grade,
             'student_id' => $student_id
         ]);
 
