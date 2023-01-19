@@ -5,9 +5,7 @@ namespace App\Http\Controllers;
 use App\Circle;
 use App\File;
 use App\Folder;
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
@@ -137,19 +135,27 @@ class FolderController extends Controller
     public function folderZipDown($id)
     {
         $folder = Folder::find($id);
+        $filePath = storage_path('app/');
+        $zip = new \ZipArchive;
+        $fileName = time().'.zip';
 
-        $zip = new \ZipArchive();
-        $fileName = 'zipFile.zip';
-        if ($zip->open(storage_path('app/') . $folder->path . "/" . $fileName, \ZipArchive::CREATE) == TRUE) {
-            $files = Storage::allFiles($folder->path);
-            foreach ($files as $key => $value) {
-                $relativeName = basename($value);
-                $zip->addFile($value, $relativeName);
-            }
-            $zip->close();
+        if(!$zip->open($fileName, \ZipArchive::CREATE)) {
+            exit("error");
         }
 
-        return Storage::download($fileName);
+        foreach(Storage::allFiles($folder->path) as $item) {
+            Storage::copy($item, basename($item));
+            $zip->addFile($filePath.$item, $item);
+        }
+
+        $zip->close();
+
+        $downZipName = $folder->title.'.zip';
+
+        header("Content-type: application/zip");
+        header("Content-Disposition: attachment; filename=$downZipName");
+        readfile($fileName);
+        unlink($fileName);
     }
 
 
