@@ -103,19 +103,46 @@ class initController extends Controller
             'password' => Hash::make('rhtlgustlstmdqlsrlawhddnjsshtmdwns'),
             'name' => '관리자다'
         ]);
-
+        // 게시판 프로필 사진 등 저장폴더 생성
+        Storage::makeDirectory('public/board_img');
+        Storage::makeDirectory('public/profile_img');
         for ($i = 1; $i <= 3; $i++) {
             for ($j = 4; $j <= 5; $j++) {
                 for ($k = 1; $k <= 21; $k++) {
                     Grade::create([
                         'grade' => $i,
                         'group' => $j === 4 ? '04' : '05',
-                        'number' => $k < 10 ? '0'.$k : $k,
+                        'number' => $k < 10 ? '0' . $k : $k,
                     ]);
                 }
             }
         }
         Storage::deleteDirectory('circles');
+        
+        foreach (Circle::all() as $circle) {
+            if ($circle->detail !== 'all') {
+                Storage::makeDirectory('circles/' . $circle->detail . '/all');
+                Storage::makeDirectory('circles/' . $circle->detail . '/1');
+                Storage::makeDirectory('circles/' . $circle->detail . '/2');
+                Storage::makeDirectory('circles/' . $circle->detail . '/3');
+                Dir::create([
+                    'name' => $circle->detail . '/all',
+                    'dir' => 'circles/' . $circle->detail . "/" . 'all',
+                ]);
+                Dir::create([
+                    'name' => $circle->detail . '/1',
+                    'dir' => 'circles/' . $circle->detail . "/" . '1',
+                ]);
+                Dir::create([
+                    'name' => $circle->detail . '/2',
+                    'dir' => 'circles/' . $circle->detail . "/" . '2',
+                ]);
+                Dir::create([
+                    'name' => $circle->detail . '/3',
+                    'dir' => 'circles/' . $circle->detail . "/" . '3',
+                ]);
+            }
+        }
 
         Schema::enableForeignKeyConstraints();
     }

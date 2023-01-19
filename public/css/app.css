@@ -17,4 +17,25 @@ header a, header span {
 .padding-div {
     padding: 150px 0;
 }
+.post{
+    height: 55px;
+    transition: .3s;
+    border-bottom: 1px solid #969798;
+}
+.post p {
+    color: black;
+}
+.post:hover{
+    background: #017226;
+    transition: .3s;
+    cursor: pointer;
+    border: none;
+}
+
+.post:hover {
+    color: white;
+}
+.post:hover a {
+    color: white;
+}
 

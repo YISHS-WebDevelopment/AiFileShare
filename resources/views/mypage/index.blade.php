@@ -27,25 +27,25 @@
                     let password = $('#password');
                     let img = $('#profile')[0].files[0];
                     let form_data = new FormData();
-                    form_data.append('auth_id',auth_id);
-                    form_data.append('password',password);
-                    form_data.append('img',img);
+                    form_data.append('auth_id', auth_id);
+                    form_data.append('password', password);
+                    form_data.append('img', img);
                     console.log(form_data);
                     $.ajax({
                         headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                         },
-                        contentType:false,
-                        processData:false,
+                        contentType: false,
+                        processData: false,
                         cache: false,
 
-                        url : '{{route('mypage.update')}}',
-                        type:'put',
-                        data :JSON.stringify(form_data),
-                        success : function(res) {
+                        url: '{{route('mypage.update')}}',
+                        type: 'put',
+                        data: JSON.stringify(form_data),
+                        success: function (res) {
                             console.log(res);
                         },
-                        error : function(res) {
+                        error: function (res) {
                             console.log(res);
                         }
                     })
@@ -153,9 +153,26 @@
     <div class="container mt-5">
         <h1>내가 쓴 글</h1>
         <hr>
-        <div class="flex-column d-flex">
-
-        </div>
+        @foreach($post_arr as $key=>$post)
+            <div class="d-flex flex-column mt-5">
+                <h3>{{$key}}</h3>
+                <hr>
+                @foreach($post as $p)
+                    <div class="flex-column d-flex mb-3">
+                        <div class="post d-flex align-items-center justify-content-between" onclick="location.href='{{route('board.detail.view',$p['id'])}}'">
+                            <a class="ml-3" href="{{route('board.detail.view',$p['id'])}}">{{$p->title}}</a>
+                            <div class="d-flex">
+                                <span class="mr-5">{{$p->user['username']}}</span>
+                                @php($date = explode('-',$p->created_at))
+                                @php($day = explode(' ',$date[2]))
+                                @php($time = explode(':',$date[2]))
+                                <span class="mr-5"> {{$date[0].'년 '.$date[1].'월 '.$day[0].'일 '. is_bool(intval($time[0]) <= 12) ? '오전 '.(intval($time[0])-12) :'오후'.intval($time[0]) }}{{'시 '.$time[1].'분 '.$time[2].'초'}}</span>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        @endforeach
     </div>
     <input type="file" name="profile_img" accept="image/gif,image/jpeg,'image/png,'image/jpg" id="profile"
            style="visibility: hidden">
