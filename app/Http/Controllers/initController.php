@@ -118,6 +118,7 @@ class initController extends Controller
             }
         }
         Storage::deleteDirectory('circles');
+        
         foreach (Circle::all() as $circle) {
             if ($circle->detail !== 'all') {
                 Storage::makeDirectory('circles/' . $circle->detail . '/all');

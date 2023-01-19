@@ -14,6 +14,19 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
+    //현재 폴더의 path 를 배열로 쪼개서 return 해주는 함수
+    public function getCurFolderPath($id , $result)
+    {
+        $folder = Folder::find($id);
+        if(is_null($folder->folder_id)) {
+            return $result;
+        } else {
+            $result[] = $id;
+            $this->getCurFolderPath($folder->folder_id, $result);
+        }
+
+    }
+
     //파일을 생성&삭제 할 때 상위 폴더의 사이즈를 계산해주는 함수
     public function folderSizeUpdate($id, $size, $type)
     {

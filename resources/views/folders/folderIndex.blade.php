@@ -19,7 +19,7 @@
                         if(!res) return alert('중복되는 폴더 이름이 있습니다.');
 
                         $('#rename-modal').modal('hide');
-                        $(`#folder_${res.id}`).html(res.title);
+                        $('.date-td').html(res.updated_at);
                     },
                     error : function(res) {
                         console.log(res);
@@ -117,9 +117,9 @@
                         <a id="folder_{{$folder['id']}}" href="{{route('folder.index',[$detail,$category,$folder['url']])}}">{{$folder->title}}</a>
                     </td>
                     @if(is_null($folder->updated_at))
-                        <td>{{date('Y-m-d',strtotime($folder->created_at))}}</td>
+                        <td class="date-td">{{date('Y-m-d',strtotime($folder->created_at))}}</td>
                     @else
-                        <td>{{date('Y-m-d',strtotime($folder->updated_at))}}</td>
+                        <td class="date-td">{{date('Y-m-d',strtotime($folder->updated_at))}}</td>
                     @endif
                     <td>{{$folder->sizeExplode($folder->size)}}</td>
                     <td>{{$folder->user->student_id}}{{$folder->user->username}}</td>
