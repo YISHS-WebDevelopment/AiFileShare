@@ -22,6 +22,8 @@ class CreateAllTables extends Migration
             $table->id();
             $table->foreignId('circle_id')->constrained();
             $table->string('auth_id');
+            $table->string('introduce')->nullable();
+            $table->string('profile')->nullable();
             $table->string('password');
             $table->string('username');
             $table->integer('grade');

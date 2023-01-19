@@ -15,7 +15,6 @@
     <script src="{{asset('/public/vendor/fontawesome/js/all.js')}}" crossorigin="anonymous"></script>
     <script src="{{asset('/public/vendor/jquery-3.6.0.js')}}"></script>
     <script src="{{asset('/public/vendor/bootstrap-4.4.1-dist/js/bootstrap.bundle.min.js')}}"></script>
-    @yield('script')
 
     @include('template.alert')
 </head>
@@ -29,7 +28,8 @@
         <div class="d-flex align-items-center">
 
             @auth()
-                <span class="mr-3">{{auth()->user()->student_id}}{{auth()->user()->username}}</span>
+                <span class="mr-3"><a
+                        href="{{route('mypage.index',auth()->user())}}">{{auth()->user()->student_id}}{{auth()->user()->username}}</a></span>
                 <a href="{{route('logout')}}">
                     <button class="btn btn-danger">로그아웃</button>
                 </a>
@@ -50,4 +50,6 @@
     @yield('contents')
 </div>
 </body>
+@yield('script')
+
 </html>

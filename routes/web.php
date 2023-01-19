@@ -57,11 +57,7 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/post/modify/{board}', [BoardController::class, 'modifyAction'])->name('boardModify.action');
     Route::post('/board/like',[BoardController::class, 'likeClick'])->name('board.like');
     Route::get('/post/delete/{board}',[BoardController::class, 'delete'])->name('board.delete');
+//마이페이지
+    Route::get('/mypage/{user}',[\App\Http\Controllers\MypageController::class, 'index'])->name('mypage.index');
 
-//관리자(어드민) 페이지
-    Route::get('/admin/index',[\App\Http\Controllers\AdminController::class,'index'])->name('admin.index');
-    Route::get('/admin/logout',[\App\Http\Controllers\AdminController::class,'logout'])->name('admin.logout');
-    Route::get('/admin/folder/manage',[\App\Http\Controllers\FolderController::class,'manage_index'])->name('folder_manage.page');
-    Route::get('/admin/board/manage',[\App\Http\Controllers\BoardController::class,'manage_index'])->name('board_manage.page');
-    Route::delete('/admin/folder/folderDel',[\App\Http\Controllers\FolderController::class,'folderDelete'])->name('admin.folder.delete');
 });
