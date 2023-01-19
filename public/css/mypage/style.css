@@ -1,0 +1,14 @@
+.profile {
+    width: 200px;
+    height: 200px;
+    border-radius: 100%;
+    overflow: hidden;
+}
+
+.profile img {
+    object-fit: cover;
+}
+
+.chg_profile {
+    cursor: pointer;
+}
