@@ -103,8 +103,6 @@
     -summernote 에디터를 통해 이미지를 추가 할 때 원본 이미지 용량 그대로 노출 되어 렉 걸리고 post제한이 걸림
     <br>
     -파일을 업로드 할 때 post제한이 xampp_local 환경에서는 40MB가 최대라서 40MB 이상을 테스트 못해봄
-    <br>
-    -폴더 이름 바꾸고 하위 파일들 경로를 DB에 업데이트 안함 빨리 
     <hr>
     <h4>ERD</h4>
     <img width="100%" src="https://user-images.githubusercontent.com/83466891/212934964-48519531-19ae-4967-8a15-714c3be36c6d.png">
