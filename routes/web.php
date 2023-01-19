@@ -59,5 +59,5 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/post/delete/{board}',[BoardController::class, 'delete'])->name('board.delete');
 //마이페이지
     Route::get('/mypage/{user}',[\App\Http\Controllers\MypageController::class, 'index'])->name('mypage.index');
-
+    Route::put('/mypage/update/{user?}',[\App\Http\Controllers\MypageController::class, 'update'])->name('mypage.update');
 });
