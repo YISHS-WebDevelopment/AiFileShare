@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Circle;
+use App\File;
 use App\Folder;
 use App\Http\Controllers\Controller;
-use Faker\Provider\File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -28,7 +28,7 @@ class FolderController extends Controller
             $cfolder = Folder::create([
                 'title' => $request->title,
                 'user_id' => auth()->user()->id,
-                'circle_id' => Circle::where('detail',$detail)->first()->id,
+                'circle_id' => Circle::where('detail', $detail)->first()->id,
                 'url' => str_replace('/', '', Hash::make($request->title)),
                 'folder_id' => $find['id'],
                 'category' => $category,
@@ -45,7 +45,7 @@ class FolderController extends Controller
             $cfolder = Folder::create([
                 'title' => $request->title,
                 'user_id' => auth()->user()->id,
-                'circle_id' => Circle::where('detail',$detail)->first()->id,
+                'circle_id' => Circle::where('detail', $detail)->first()->id,
                 'url' => str_replace('/', '', Hash::make($request->title)),
                 'category' => $category,
                 'path' => 'circles/' . $detail . "/" . $category . "/" . $request->title,
@@ -88,22 +88,48 @@ class FolderController extends Controller
     {
         $find = Folder::find($request->id);
 
-
         foreach (Folder::where('folder_id', $find->folder_id)->get() as $folder) {
             if ($folder->title === $request->title) return false;
         }
-
         $explode = explode('/', $find->path);
+        $folderPathIdx = array_search(explode('/', $find->path)[count($explode) - 1], $explode);
+        $request->session()->flash('prevPath', $find->path);
+
+        //파일경로에 폴더 이름 바뀐거 업데이트
+        foreach (Storage::allFiles($find->path) as $item) {
+            $file = File::where('path', $item)->first();
+            $filePathArr = explode("/", $item);
+            $filePathArr[$folderPathIdx] = $request->title;
+            $filePath = join("/", $filePathArr);
+
+            $file->update([
+                'path' => $filePath
+            ]);
+        }
+
+        //폴더이름 바뀐거 해당 폴더의 하위폴더들에 업데이트
+        foreach (Storage::allDirectories($find->path) as $item) {
+             $folder = Folder::where('path', $item)->first();
+             $folderPathArr = explode("/", $item);
+             $folderPathArr[$folderPathIdx] = $request->title;
+             $path = join("/", $folderPathArr);
+
+             $folder->update([
+                 'path' => $path,
+             ]);
+        }
+
         $explode[count($explode) - 1] = $request->title;
-        $path = join("/", $explode);
+        $folderPath = join("/", $explode);
 
-        Storage::move($find->path, $path);
-
+        //폴더 이름 바꾸기
         $find->update([
             'title' => $request->title,
-            'path' => $path,
+            'path' => $folderPath,
             'updated_at' => now(),
         ]);
+
+        Storage::move($request->session()->get('prevPath'), $folderPath);
 
         return $find;
     }
@@ -114,10 +140,9 @@ class FolderController extends Controller
 
         $zip = new \ZipArchive();
         $fileName = 'zipFile.zip';
-        if ($zip->open(storage_path('app/').$folder->path."/".$fileName, \ZipArchive::CREATE)== TRUE)
-        {
+        if ($zip->open(storage_path('app/') . $folder->path . "/" . $fileName, \ZipArchive::CREATE) == TRUE) {
             $files = Storage::allFiles($folder->path);
-            foreach ($files as $key => $value){
+            foreach ($files as $key => $value) {
                 $relativeName = basename($value);
                 $zip->addFile($value, $relativeName);
             }
@@ -125,7 +150,6 @@ class FolderController extends Controller
         }
 
         return Storage::download($fileName);
-
     }
 
 
@@ -165,38 +189,4 @@ class FolderController extends Controller
         }
         return view('folders/folderIndex', compact(['find', 'detail', 'category', 'files', 'parent', 'path']));
     }
-
-    public function manage_index(Circle $circle)
-    {
-        return view('admin.management.folder_manage', compact(['circle']));
-    }
-
-    public function folderManagementPage()
-    {
-//        return view('admin.management.folder_list',compact(['folders']));
-
-    }
-
-//    public function folderDelete(Request $request)
-//    {
-//        $folder = Folder::find($request['id']);
-//        $files = $folder->files;
-//        $childFolder = $folder->childFolders($folder['url']);
-//        if (!empty($childFolder)) {
-//            foreach ($childFolder as $c) {
-//                $c->delete();
-//
-//            }
-//        }
-//        if (!empty($files)) {
-//            foreach ($files as $file) {
-//                \Illuminate\Support\Facades\File::delete($file['title']);
-//                }
-//            $files->delete();
-//
-//        }
-//        $folder->delete();
-//
-//    }
-
 }
