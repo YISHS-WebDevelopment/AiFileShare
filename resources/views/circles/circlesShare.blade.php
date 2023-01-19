@@ -55,7 +55,7 @@
         <table class="table pl-4 pr-4 rounded shadow">
             <thead>
             <tr>
-                <th><i id="file-icon" class="fa-solid fa-file"></i></th>
+                <th><i id="file-icon" class="fa-sharp fa-file"></i></th>
                 <th>
                     <div class="dropdown show">
                         <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
