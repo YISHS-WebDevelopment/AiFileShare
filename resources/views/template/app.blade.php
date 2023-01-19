@@ -9,10 +9,10 @@
     <title>AI-FileShare</title>
 
     <link rel="stylesheet" href="{{asset('/public/vendor/bootstrap-4.4.1-dist/css/bootstrap.css')}}">
-    <link rel="stylesheet" href="{{asset('/')}}">
+    <link rel="stylesheet" href="{{asset('/public/vendor/fontawesome/css/all.css')}}">
     <link rel="stylesheet" href="{{asset('/public/css/app.css')}}">
     @yield('style')
-    <script src="https://kit.fontawesome.com/2efaf0dba8.js" crossorigin="anonymous"></script>
+    <script src="{{asset('/public/vendor/fontawesome/js/all.js')}}" crossorigin="anonymous"></script>
     <script src="{{asset('/public/vendor/jquery-3.6.0.js')}}"></script>
     <script src="{{asset('/public/vendor/bootstrap-4.4.1-dist/js/bootstrap.bundle.min.js')}}"></script>
     @yield('script')
