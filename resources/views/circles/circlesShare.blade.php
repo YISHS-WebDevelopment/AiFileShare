@@ -127,7 +127,7 @@
                                    data-target="#rename-modal" data-title="{{$folder->title}}"
                                    data-id="{{$folder->id}}">이름 바꾸기</a>
                                 <a class="dropdown-item" href="#">다음으로 이동</a>
-                                <a class="dropdown-item" href="{{route('folder.zip.down',[$folder->id])}}">다운(ZIP)</a>
+                                <a class="dropdown-item" href="{{route('folder.zip.down',[$detail,$category,$folder->id])}}">다운(ZIP)</a>
                                 <form action="">
                                     <a class="dropdown-item" href="{{route('folder.delete',[$folder->id])}}"
                                        onclick="return confirm('정말 삭제하시겠습니까? 하부 폴더와 파일들이 모두 삭제됩니다.')">삭제</a>
