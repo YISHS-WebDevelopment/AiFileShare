@@ -14,32 +14,32 @@
     </style>
 @endsection
 @section('script')
-        <script>
-            $(() => {
-                $(document)
-                    .on('click', '.like-icon', function () {
-                        $.ajax({
-                            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                            url: '{{route('board.like')}}',
-                            type: 'post',
-                            data: {'user_id': '{{auth()->user()->id}}', 'board_id': '{{$board->id}}'},
-                            success: function (res) {
-                                $('#like-num').html(res.board.like);
-                                if (res.like.like) {
-                                    $('.like-icon').addClass('border-danger');
-                                    $('.like-icon i').css('color', 'red');
-                                } else {
-                                    $('.like-icon').removeClass('border-danger');
-                                    $('.like-icon i').css('color', 'black');
-                                }
-                            },
-                            error: function (res) {
-                                // console.log(res.responseJSON.message);
+    <script>
+        $(() => {
+            $(document)
+                .on('click', '.like-icon', function () {
+                    $.ajax({
+                        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                        url: '{{route('board.like')}}',
+                        type: 'post',
+                        data: {'user_id': '{{auth()->user()->id}}', 'board_id': '{{$board->id}}'},
+                        success: function (res) {
+                            $('#like-num').html(res.board.like);
+                            if (res.like.like) {
+                                $('.like-icon').addClass('border-danger');
+                                $('.like-icon i').css('color', 'red');
+                            } else {
+                                $('.like-icon').removeClass('border-danger');
+                                $('.like-icon i').css('color', 'black');
                             }
-                        })
+                        },
+                        error: function (res) {
+                            // console.log(res.responseJSON.message);
+                        }
                     })
-            })
-        </script>
+                })
+        })
+    </script>
 @endsection
 @section('contents')
     <div>
@@ -47,27 +47,52 @@
         <hr>
         <div class="d-flex flex-column">
             <div class="w-100 d-flex justify-content-between">
-                <b class="mb-2" style="font-size: 1.1rem">{{$board->title}}</b>
+                <b class="mb-2" style="font-size: 2.4rem">제목: {{$board->title}}</b>
                 <div class="d-flex">
                     <button class="btn btn-outline-primary"
                             onclick="location.href='{{route('boardModifyPage',$board->id)}}'">수정
                     </button>
-                    <button class="btn btn-outline-danger ml-2" ONCLICK="location.href='{{route('board.delete',$board)}}'">삭제</button>
+                    <button class="btn btn-outline-danger ml-2"
+                            ONCLICK="location.href='{{route('board.delete',$board)}}'">삭제
+                    </button>
                 </div>
 
             </div>
-            <div class="d-flex">
-                <span class="mr-2">{{$board->user->student_id}}{{$board->user->username}}</span>
+            <div class="d-flex align-items-center">
+
+                <div style="width: 100px;height: 100px;border-radius: 100%;overflow: hidden;">
+                    <img class="w-100 h-100" style="object-fit: cover" src="/storage/app/{{$board->user->profile}}"
+                         alt="">
+                </div>
+                <span class="mr-2 ml-4">{{$board->user->student_id}}{{$board->user->username}}</span>
                 <span class="ml-2">{{$board->created_at}}</span>
             </div>
         </div>
         <hr>
-        <div class="d-flex flex-column">
+        <div class="d-flex flex-column" style="min-height: 600px">
             <span>{!! $board->contents !!}</span>
         </div>
         <hr>
         <div class="btn-group">
             <button class="btn btn-primary" onclick="location.href='{{url()->previous()}}'">목록</button>
+        </div>
+        <div class="d-flex flex-column">
+            <hr>
+            <div class="w-100">
+                <div class="d-flex align-items-center">
+                    <div style="width: 55px;height: 55px;border-radius: 100%;overflow: hidden;">
+                        <img class="w-100 h-100" style="object-fit: cover" src="/storage/app/{{$board->user->profile}}"
+                             alt="">
+                    </div>
+                    <h4 class="ml-2">{{$board->user->username}}</h4>
+                </div>
+                <textarea class="w-100 mt-2" name="" id="" cols="30" rows="10"
+                          placeholder="타인의 권리를 침해하거나 명예를 훼손하는 댓글은 운영원칙 및 관련 법률에 제제를 받을 수 있습니다."></textarea>
+
+                <div class="w-100 d-flex justify-content-end">
+                    <button class="btn btn-outline-primary">등록</button>
+                </div>
+            </div>
         </div>
         <div class="d-flex justify-content-center">
             <div class="w-25 p-4 d-flex justify-content-center">

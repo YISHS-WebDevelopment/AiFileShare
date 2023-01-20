@@ -29,7 +29,6 @@ class initController extends Controller
         DB::table('admins')->truncate();
         DB::table('boards_views')->truncate();
         DB::table('boards_likes')->truncate();
-        DB::table('boards_images')->truncate();
         DB::table('dirs')->truncate();
 
         Circle::create([
@@ -52,7 +51,15 @@ class initController extends Controller
             'detail' => 'CAD',
             'name' => '캐드'
         ]);
-
+        User::create([
+            'auth_id' => 'admin',
+            'password' => '1234',
+            'username' => '관리자',
+            'circle_id' => 0,
+            'grade' => 0,
+            'student_id' => 'admin',
+            'type' => 'admin'
+        ]);
         User::create([
             'auth_id' => 'thsgusqls',
             'password' => '1234',
@@ -118,7 +125,7 @@ class initController extends Controller
             }
         }
         Storage::deleteDirectory('circles');
-        
+
         foreach (Circle::all() as $circle) {
             if ($circle->detail !== 'all') {
                 Storage::makeDirectory('circles/' . $circle->detail . '/all');
