@@ -34,11 +34,13 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/circles/{detail}/{category}/sharedFolder', [CirclesController::class, 'sharePage'])->name('circles.share');
 
     //폴더
-    Route::get('/circles/{detail}/{category}/sharedFolder/{folder}', [FolderController::class, 'folderView'])->name('folder.index');
+    Route::get('/circles/{detail}/{category}/sharedFolder/{url}', [FolderController::class, 'folderView'])->name('folder.index');
     Route::post('/folderManager/folderCreate/{detail}/{category}/{folder?}', [FolderController::class, 'folderCreate'])->name('folder.create');
     Route::get('/folder/delete/{id}', [FolderController::class, 'folderDelete'])->name('folder.delete');
     Route::post('/folder/rename', [FolderController::class, 'folderRename'])->name('folder.rename');
     Route::get('/folder/zipDown/{detail}/{category}/{id}', [FolderController::class, 'folderZipDown'])->name('folder.zip.down');
+    Route::post('/folder/move', [FolderController::class, 'folderMove'])->name('folder.move');
+    Route::post('/folder/getUserName', [FolderController::class, 'jsGetUserName'])->name('get.username');
 
     //파일
     Route::post('/file/create/{folder}', [FileController::class, 'fileCreate'])->name('file.create');

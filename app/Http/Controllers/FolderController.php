@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Circle;
 use App\File;
 use App\Folder;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
@@ -169,42 +170,30 @@ class FolderController extends Controller
         unlink($fileName);
     }
 
-
-    public function folderView($detail, $category, $folder = null)
+    public function folderMove(Request $request)
     {
-        $pathArr = $this->getCurFolderPath(Folder::where('url',$folder)->first()->id, []);
-        if (!is_null($folder)) {
-            $find = Folder::where('url', $folder)->first();
-            $files = $find->files->all();
-            $parent = Folder::where('id', $find['folder_id'])->first();
-            $parent_arr = [];
-            $path = null;
-            $cnt = 0;
-            while (true) {
-                if ($cnt === 0) {
-                    $p = Folder::where('id', $find['folder_id'])->first();
-                    if (!is_null($p)) {
-                        array_push($parent_arr, $p);
-                    }
-                }
-                if (is_null($p)) {
-                    break;
-                } else {
-                    $p = Folder::where('id', $p['folder_id'])->first();
-                    if (!is_null($p)) {
-                        array_push($parent_arr, $p);
-                    }
-                }
-                $cnt++;
-            }
-            if (!is_null($parent_arr)) {
-                $parent_arr = array_reverse($parent_arr);
-                $path = '';
-                foreach ($parent_arr as $pathItem) {
-                    $path .= '/' . $pathItem['title'];
-                }
-            }
+        $circle_id = Circle::where('detail', $request->detail)->first()->id;
+        if ($request->url === 'null') {
+            $find = false;
+        } else {
+            $find = Folder::where(['circle_id' => $circle_id, 'category' => $request->category,'url' => $request->url])->first();
         }
-        return view('folders/folderIndex', compact(['find', 'detail', 'category', 'files', 'parent', 'path', 'pathArr']));
+        return $this->parentPathArr($find, $request->detail, $request->category);
+    }
+
+    public function jsGetUserName(Request $request)
+    {
+        return User::find($request->id);
+    }
+
+    public function folderView($detail, $category, $url)
+    {
+        $find = Folder::where('url', $url)->first();
+        $files = $find->files->all();
+        $parent = Folder::where('id', $find->folder_id)->first();
+
+        $parent_arr = $this->parentPathArr($find, $detail, $category);
+
+        return view('folders/folderIndex', compact(['find', 'url', 'detail', 'category', 'files', 'parent', 'parent_arr']));
     }
 }
