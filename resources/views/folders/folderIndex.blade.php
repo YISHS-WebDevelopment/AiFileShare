@@ -14,23 +14,28 @@
         <div class="container">
             <div class="d-flex justify-content-between">
                 <div class="d-flex flex-column path-box">
-                    <div class="d-flex">
-                        <span id="important-icon">*</span><span id="read-text">상위 폴더로 이동하려면 ..을 클릭해주세요.</span>
-                    </div>
-                    @if(is_null($parent))
-                        <h1 style="cursor: pointer"><a href="{{route('circles.share',[$detail,$category])}}">.. </a>/{{$find->title}}</h1>
+                    @if(!$url)
+                        <h1 style="cursor: pointer"><a href="#">.. </a></h1>
                     @else
                         <h1>
-                            <a href="{{route('folder.index',[$parent->circle->detail,$category,$parent->url])}}">..</a>
-                        @foreach($parent_arr['path'] as $folder)
-                            <a href="{{route('folder.index', [$folder->circle->detail, $category, $folder->url])}}">/{{$folder->title}}</a>
-                        @endforeach
+                            @if(!$parent)
+                            <a href="{{route('folder.index',[$detail,$category])}}">..</a>
+                            @else
+                                <a href="{{route('folder.index',[$parent->circle->detail,$category, $parent->url])}}">..</a>
+                            @endif
+                            @foreach($parent_arr['path'] as $folder)
+                                <a href="{{route('folder.index', [$folder->circle->detail, $category, $folder->url])}}">/{{$folder->title}}</a>
+                            @endforeach
                         </h1>
                     @endif
+                    <div class="d-flex">
+                        <span id="important-icon">*</span><span id="read-text">상위 폴더로 이동하려면 ..이나 폴더 이름을 클릭해주세요.</span>
+                    </div>
                 </div>
                 <div class="d-flex justify-content-between align-items-center">
                     <div class="dropdown show">
-                        <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             ＋ 새로 만들기
                         </a>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
@@ -42,16 +47,14 @@
             </div>
             <hr>
         </div>
-        <div class="d-flex">
-            <i class="fa-sharp fa-solid fa-up"></i>
-        </div>
         <table class="table pl-4 pr-4 rounded shadow">
             <thead>
             <tr>
                 <th><i id="file-icon" class="fa-solid fa-file"></i></th>
                 <th>
                     <div class="dropdown show">
-                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
+                           aria-haspopup="true" aria-expanded="false">
                             이름 ↑
                         </a>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
@@ -62,7 +65,8 @@
                 </th>
                 <th>
                     <div class="dropdown show">
-                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
+                           aria-haspopup="true" aria-expanded="false">
                             수정한 날짜
                         </a>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
@@ -73,7 +77,8 @@
                 </th>
                 <th>
                     <div class="dropdown show">
-                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
+                           aria-haspopup="true" aria-expanded="false">
                             파일 크기
                         </a>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
@@ -87,54 +92,50 @@
             </tr>
             </thead>
             <tbody>
-            @foreach(\App\Folder::where('folder_id',$find['id'])->get() as $folder)
+            @foreach($allFolderAndFiles as $item)
                 <tr>
-                    <td><img src="{{asset('/public/images/folder_icon.svg')}}" class="folder-icon" alt="folder_icon"></td>
-                    <td>
-                        <a id="folder_{{$folder['id']}}" href="{{route('folder.index',[$detail,$category,$folder['url']])}}">{{$folder->title}}</a>
-                    </td>
-                    @if(is_null($folder->updated_at))
-                        <td class="date-td">{{date('Y-m-d',strtotime($folder->created_at))}}</td>
+                    @if(class_basename($item) === 'Folder')
+                        <td><img src="{{asset('/public/images/folder_icon.svg')}}" class="folder-icon"
+                                 alt="folder_icon"></td>
+                        <td>
+                            <a id="folder_{{$item->id}}"
+                               href="{{route('folder.index',[$detail,$category,$item->url])}}">{{$item->title}}</a>
+                        </td>
+                        @if(is_null($item->updated_at))
+                            <td class="date-td">{{date('Y-m-d',strtotime($item->created_at))}}</td>
+                        @else
+                            <td class="date-td">{{date('Y-m-d',strtotime($item->updated_at))}}</td>
+                        @endif
                     @else
-                        <td class="date-td">{{date('Y-m-d',strtotime($folder->updated_at))}}</td>
+                        <td><img src="{{asset('/public/images/txt_icon.svg')}}" class="folder-icon" alt="folder_icon">
+                        </td>
+                        <td>{{$item->title}}</td>
+                        <td>{{date('Y-m-d',strtotime($item->created_at))}}</td>
                     @endif
-                    <td>{{$folder->sizeExplode($folder->size)}}</td>
-                    <td>{{$folder->user->student_id}}{{$folder->user->username}}</td>
+                    <td>{{$item->sizeExplode($item->size)}}</td>
+                    <td>{{$item->user->student_id}}{{$item->user->username}}</td>
                     <td>
                         <div class="dropdown show">
-                            <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
-                               aria-haspopup="true" aria-expanded="false">
-                            </a>
+                            <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                <a class="dropdown-item" href="#" id="rename" data-toggle="modal"
-                                   data-target="#rename-modal" data-title="{{$folder->title}}"
-                                   data-id="{{$folder->id}}">이름 바꾸기</a>
-                                <a class="dropdown-item move-btn" data-url="{{$url}}" data-id="{{$folder->id}}" href="#" data-toggle="modal" data-target="#move-modal">다음으로 이동</a>
-                                <a class="dropdown-item" href="{{route('folder.zip.down',[$detail,$category,$folder->id])}}">다운(ZIP)</a>
-                                <a class="dropdown-item" href="{{route('folder.delete',[$folder->id])}}" onclick="return confirm('정말 삭제하시겠습니까? 하부 폴더와 파일들이 모두 삭제됩니다.')">삭제</a>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-            @endforeach
-            @foreach($files as $file)
-                <tr>
-                    <td><img src="{{asset('/public/images/txt_icon.svg')}}" class="folder-icon" alt="folder_icon"></td>
-                    <td>
-                        {{$file['title']}}
-                    </td>
-                    <td>{{date('Y-m-d',strtotime($file->created_at))}}</td>
-                    <td>{{$file->sizeExplode($file->size)}}</td>
-                    <td>{{$file->user->student_id}}{{$file->user->username}}</td>
-                    <td>
-                        <div class="dropdown show">
-                            <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
-                               aria-haspopup="true" aria-expanded="false">
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                <a class="dropdown-item move-btn" data-url="{{$url}}" data-id="{{$file->folder_id}}" href="#" data-toggle="modal" data-target="#move-modal">다음으로 이동</a>
-                                <a class="dropdown-item" href="{{route('file.download',[$file->id])}}">다운로드</a>
-                                <a class="dropdown-item" href="{{route('file.delete',[$file->id])}}" onclick="return confirm('정말 삭제하시겠습니까?')">삭제</a>
+                                @if(class_basename($item) === 'Folder')
+                                    <a class="dropdown-item" href="#" id="rename" data-toggle="modal"
+                                       data-target="#rename-modal" data-title="{{$item->title}}"
+                                       data-id="{{$item->id}}">이름 바꾸기</a>
+                                    <a class="dropdown-item move-btn" data-url="{{$url}}" data-id="{{$item->id}}"
+                                       href="#" data-toggle="modal" data-target="#move-modal">다음으로 이동</a>
+                                    <a class="dropdown-item"
+                                       href="{{route('folder.zip.down',[$detail,$category,$item->id])}}">다운로드</a>
+                                    <a class="dropdown-item" href="{{route('folder.delete',[$item->id])}}"
+                                       onclick="return confirm('정말 삭제하시겠습니까? 하부 폴더와 파일들이 모두 삭제됩니다.')">삭제</a>
+                                @else
+                                    <a class="dropdown-item move-btn" data-url="{{$url}}" data-id="{{$item->folder_id}}"
+                                       href="#" data-toggle="modal" data-target="#move-modal">다음으로 이동</a>
+                                    <a class="dropdown-item" href="{{route('file.download',[$item->id])}}">다운로드</a>
+                                    <a class="dropdown-item" href="{{route('file.delete',[$item->id])}}"
+                                       onclick="return confirm('정말 삭제하시겠습니까?')">삭제</a>
+                                @endif
                             </div>
                         </div>
                     </td>
@@ -152,7 +153,7 @@
                     <span class="font-weight-bold" style="cursor: pointer;font-size: 1.2rem"
                           data-dismiss="modal">X</span>
                 </div>
-                <form action="{{route('folder.create',[$detail,$category,$find->url])}}" method="post">
+                <form action="{{route('folder.create',[$detail,$category,$url])}}" method="post">
                     @csrf
                     <div class="modal-body">
                         <input type="text" id="folder-input" placeholder="폴더 이름을 입력해주세요." name="title" required
@@ -175,7 +176,8 @@
                     <span class="font-weight-bold" style="cursor: pointer;font-size: 1.2rem"
                           data-dismiss="modal">X</span>
                 </div>
-                <form enctype="multipart/form-data" action="{{route('file.create', $find->url)}}" method="post">
+                <form enctype="multipart/form-data" action="{{route('file.create', [$detail,$category,$url])}}"
+                      method="post">
                     @csrf
                     <div class="modal-body">
                         <input type="file" name="file" required>

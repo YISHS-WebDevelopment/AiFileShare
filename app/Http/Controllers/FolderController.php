@@ -12,15 +12,29 @@ use Illuminate\Support\Facades\Storage;
 
 class FolderController extends Controller
 {
-    public function index(Hash $hash)
+    public function folderView($detail, $category, $url = null)
     {
-        return view('index', compact(['hash']));
+        $circle_id = Circle::where('detail', $detail)->first()->id;
+        if($url) {
+            $find = Folder::where('url', $url)->first();
+            $allFolderAndFiles = Folder::where(['folder_id' => $find->id, 'circle_id' => $circle_id, 'category' => $category])->get()->merge(File::where('folder_id', $find->id)->get());
+            $parent = Folder::find($find->folder_id);
+            $parent_arr = $this->parentPathArr($find, $detail, $category);
+        }
+        else {
+            $allFolderAndFiles = Folder::where(['circle_id' => $circle_id, 'category' => $category])->whereNull('folder_id')->get()->mergeRecursive(File::where(['circle_id' => $circle_id, 'category' => $category])->whereNull('folder_id')->get());
+            $find = null;
+            $parent = null;
+            $parent_arr = null;
+        }
+
+        return view('folders/folderIndex', compact(['detail', 'category', 'url', 'find', 'allFolderAndFiles', 'parent', 'parent_arr']));
     }
 
-    public function folderCreate(Request $request, $detail, $category, $folder = null)
+    public function folderCreate(Request $request, $detail, $category, $url = null)
     {
-        if (!is_null($folder)) {
-            $find = Folder::where('url', $folder)->first();
+        if (!is_null($url)) {
+            $find = Folder::where('url', $url)->first();
             foreach (Folder::where('folder_id', $find->id)->get() as $item) {
                 if ($request->title === $item->title) return back()->with('msg', '중복되는 폴더 이름이 있습니다.');
             }
@@ -130,6 +144,8 @@ class FolderController extends Controller
 
         Storage::move($request->session()->get('prevPath'), $folderPath);
 
+        $find->updated_at = date('Y-m-d', strtotime($find->updated_at));
+
         return $find;
     }
 
@@ -176,24 +192,8 @@ class FolderController extends Controller
         if ($request->url === 'null') {
             $find = false;
         } else {
-            $find = Folder::where(['circle_id' => $circle_id, 'category' => $request->category,'url' => $request->url])->first();
+            $find = Folder::where(['circle_id' => $circle_id, 'category' => $request->category, 'url' => $request->url])->first();
         }
         return $this->parentPathArr($find, $request->detail, $request->category);
-    }
-
-    public function jsGetUserName(Request $request)
-    {
-        return User::find($request->id);
-    }
-
-    public function folderView($detail, $category, $url)
-    {
-        $find = Folder::where('url', $url)->first();
-        $files = $find->files->all();
-        $parent = Folder::where('id', $find->folder_id)->first();
-
-        $parent_arr = $this->parentPathArr($find, $detail, $category);
-
-        return view('folders/folderIndex', compact(['find', 'url', 'detail', 'category', 'files', 'parent', 'parent_arr']));
     }
 }

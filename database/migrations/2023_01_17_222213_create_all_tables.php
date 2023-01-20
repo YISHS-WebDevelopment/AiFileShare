@@ -51,7 +51,9 @@ class CreateAllTables extends Migration
         Schema::create('files', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained();
-            $table->foreignId('folder_id')->constrained();
+            $table->foreignId('circle_id')->constrained();
+            $table->string('category')->nullable();
+            $table->integer('folder_id')->nullable();
             $table->string('title');
             $table->string('path');
             $table->bigInteger('size');
