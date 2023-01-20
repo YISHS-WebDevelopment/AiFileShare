@@ -10,6 +10,7 @@ use App\Boards_view;
 use App\Http\Controllers\Controller;
 use App\Post_img;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class BoardController extends Controller
 {
@@ -30,7 +31,7 @@ class BoardController extends Controller
     {
         $board = Board::find($id);
         if (auth()->check()) {
-            if ($board->user_id !== auth()->user()->id && auth()->user()->type !== 'admin') {
+            if ($board->user_id != auth()->user()->id && auth()->user()->type !== 'admin') {
                 return redirect(route('board.detail.view', $board->id))->with('msg', '관리자와 본인만 글 수정이 가능합니다.');
             }
         }
@@ -44,11 +45,6 @@ class BoardController extends Controller
             'title' => $request->title,
             'contents' => $request->editordata
         ];
-//        $content = $request->editordata;
-//        $dom = new \DomDocument();
-        /*        @$dom->loadHTML('<?xml encoding="utf-8" ?>' . $content, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);*/
-//        $imageFile = $dom->getElementsByTagName('img');
-//        dd($imageFile);
         $b = $board->update($input);
         return redirect(route('board.detail.view', $board->id))->with('msg', '수정되었습니다.');
     }
@@ -86,20 +82,32 @@ class BoardController extends Controller
             'title' => $request->title,
             'contents' => $content
         ]);
-        if (count($imageFile) !== 0) {
-            $input2 = [
-                'board_id' => $board['id'],
-                'path' => 'img_' . $time
-            ];
-            Boards_image::create($input2);
-        }
+//        if (count($imageFile) !== 0) {
+//            $input2 = [
+//                'board_id' => $board['id'],
+//                'path' => 'img_' . $time
+//            ];
+//            Boards_image::create($input2);
+//        }
         if ($type === 'circles') return redirect()->route('board.page', [$detail, $category])->with('msg', '작성이 완료되었습니다.');
         else return redirect()->route('board.page', ['null', $category])->with('msg', '작성이 완료되었습니다.');
     }
     public function delete(Board $board){
         if (auth()->check()) {
-            if ($board->user_id !== auth()->user()->id && auth()->user()->type !== 'admin') {
+            if ($board->user_id != auth()->user()->id && auth()->user()->type !== 'admin') {
                 return redirect(route('board.detail.view', $board->id))->with('msg', '관리자와 본인만 글 삭제 가능합니다.');
+            }
+        }
+
+
+        if (!empty($board->current_like_user)){
+            foreach ($board->current_like_user as $col){
+                $col->delete();
+            }
+        }
+        if (!empty($board->current_view_user)){
+            foreach ($board->current_view_user as $col){
+                $col->delete();
             }
         }
         $category = $board->category;

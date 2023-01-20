@@ -83,16 +83,16 @@
     <br>
     -게시판 공지사항 등록(<img src="https://img.shields.io/badge/X-red?style=flat-square&logo=&logoColor="/>)
     <br>
-    -모든 학생(유저) 정보 관리(수정, 삭제)(<img src="https://img.shields.io/badge/X-red?style=flat-square&logo=&logoColor="/>)
+    -모든 학생(유저) 정보 관리(수정, 삭제)(<img src="https://img.shields.io/badge/O-green?style=flat-square&logo=&logoColor="/>)
     <hr>
     <h4>My페이지</h4>
-    -자신이 등록한 폴더, 파일, 게시글이 한 눈에 보임(<img src="https://img.shields.io/badge/X-red?style=flat-square&logo=&logoColor="/>)
+    -자신이 등록한 폴더, 파일, 게시글이 한 눈에 보임(<img src="https://img.shields.io/badge/O-green?style=flat-square&logo=&logoColor="/>)
     <br>
-    -자신이 등록한 폴더, 파일, 게시글 관리(수정, 삭제)(<img src="https://img.shields.io/badge/X-red?style=flat-square&logo=&logoColor="/>)
+    -자신이 등록한 폴더, 파일, 게시글 관리(수정, 삭제)(<img src="https://img.shields.io/badge/O-green?style=flat-square&logo=&logoColor="/>)
     <br>
-    -프로필 사진 등록 가능(<img src="https://img.shields.io/badge/△-yellow?style=flat-square&logo=&logoColor="/>)
+    -프로필 사진 등록 가능(<img src="https://img.shields.io/badge/O-green?style=flat-square&logo=&logoColor="/>)
     <br>
-    -자기 소개글 작성 가능(<img src="https://img.shields.io/badge/△-yellow?style=flat-square&logo=&logoColor="/>)
+    -자기 소개글 작성 가능(<img src="https://img.shields.io/badge/O-green?style=flat-square&logo=&logoColor="/>)
     <hr>
     <h4>설계</h4>
     -하위 폴더나 파일들은 상위 폴더의 DB에 저장 된 암호화 url로 접근 

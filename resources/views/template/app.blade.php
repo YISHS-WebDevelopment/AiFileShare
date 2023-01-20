@@ -24,6 +24,12 @@
         <div class="d-flex">
             <a href="{{route('index')}}" class="mr-5">홈</a>
             <a href="{{route('circles.page')}}" class="mr-5">동아리</a>
+            @if(auth()->user()->type == 'admin')
+            <a href="{{route('user.index')}}" cl@ass="mr-5">사용자 관리</a>
+            @else
+                <a href="{{route('user.index')}}" cl@ass="mr-5">사용자목록</a>
+            @endif
+
         </div>
         <div class="d-flex align-items-center">
 

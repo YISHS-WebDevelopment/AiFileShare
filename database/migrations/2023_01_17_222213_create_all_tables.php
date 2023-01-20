@@ -22,8 +22,8 @@ class CreateAllTables extends Migration
             $table->id();
             $table->foreignId('circle_id')->constrained();
             $table->string('auth_id');
-            $table->string('introduce')->nullable();
-            $table->string('profile')->nullable();
+            $table->string('introduce')->nullable()->default('소개글이 없습니다.');
+            $table->string('profile')->nullable()->default('public/profile_img/default_profile.png');
             $table->string('password');
             $table->string('username');
             $table->integer('grade');
@@ -70,7 +70,7 @@ class CreateAllTables extends Migration
             $table->string('circle_check');
             $table->string('category');
             $table->string('title');
-            $table->text('contents');
+            $table->longText('contents');
             $table->string('path')->nullable();
             $table->bigInteger('views')->default(0);
             $table->bigInteger('like')->default(0);
@@ -87,11 +87,6 @@ class CreateAllTables extends Migration
             $table->foreignId('board_id')->constrained();
             $table->foreignId('user_id')->constrained();
             $table->boolean('like')->default(0);
-        });
-        Schema::create('boards_images', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('board_id')->constrained();
-            $table->string('path');
         });
         Schema::create('dirs', function (Blueprint $table) {
             $table->id();
