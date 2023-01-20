@@ -31,19 +31,17 @@ Route::middleware(['auth'])->group(function () {
     //동아리
     Route::get('/circles', [CirclesController::class, 'view'])->name('circles.page');
     Route::get('/circles/{detail}/{category}', [CirclesController::class, 'detail'])->name('circles.detail');
-    Route::get('/circles/{detail}/{category}/sharedFolder', [CirclesController::class, 'sharePage'])->name('circles.share');
 
     //폴더
-    Route::get('/circles/{detail}/{category}/sharedFolder/{url}', [FolderController::class, 'folderView'])->name('folder.index');
-    Route::post('/folderManager/folderCreate/{detail}/{category}/{folder?}', [FolderController::class, 'folderCreate'])->name('folder.create');
+    Route::get('/circles/sharedFolder/{detail}/{category}/{url?}', [FolderController::class, 'folderView'])->name('folder.index');
+    Route::post('/folderManager/folderCreate/{detail}/{category}/{url?}', [FolderController::class, 'folderCreate'])->name('folder.create');
     Route::get('/folder/delete/{id}', [FolderController::class, 'folderDelete'])->name('folder.delete');
     Route::post('/folder/rename', [FolderController::class, 'folderRename'])->name('folder.rename');
     Route::get('/folder/zipDown/{detail}/{category}/{id}', [FolderController::class, 'folderZipDown'])->name('folder.zip.down');
     Route::post('/folder/move', [FolderController::class, 'folderMove'])->name('folder.move');
-    Route::post('/folder/getUserName', [FolderController::class, 'jsGetUserName'])->name('get.username');
 
     //파일
-    Route::post('/file/create/{folder}', [FileController::class, 'fileCreate'])->name('file.create');
+    Route::post('/file/create/{detail}/{category}/{url?}', [FileController::class, 'fileCreate'])->name('file.create');
     Route::get('/file/download/{id}',[FileController::class, 'fileDownload'])->name('file.download');
     Route::get('/file/delete/{id}', [FileController::class, 'fileDelete'])->name('file.delete');
 

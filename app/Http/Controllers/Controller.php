@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Circle;
 use App\File;
 use App\Folder;
+use App\User;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -45,12 +46,19 @@ class Controller extends BaseController
             ];
         } else {
             $html = Folder::where(['circle_id' => Circle::where('detail', $detail)->first()->id, 'category' => $category, 'folder_id' => null])->get();
+
             $result = [
                 'path' => '',
                 'current' => '',
                 'parent' => '',
                 'html' => $html,
             ];
+        }
+
+        foreach($result['html'] as $item) {
+            $item['user'] = $item->user;
+            $item->created_at = date('Y-m-d', strtotime($item->created_at));
+            if($item->updated_at) $item->updated_at = date('Y-m-d', strtotime($item->updated_at));
         }
 
         return $result;

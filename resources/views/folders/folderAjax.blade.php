@@ -17,7 +17,7 @@
 
                         $('#rename-modal').modal('hide');
                         $(`#folder_${res.id}`).html(res.title);
-
+                        $('.date-td').html(res.updated_at);
                     },
                     error: function (res) {
                         console.log(res);
@@ -26,6 +26,7 @@
             })
             //다음으로 이동 누를 때
             .on('click', '.move-btn', function () {
+                $('#move-modal').attr('data-target', $(this).attr('data-id'));
                 modalMake($(this).attr('data-url'), $(this).attr('data-id'));
             })
             //모달안에서 폴더 누를 때
@@ -50,21 +51,6 @@
 
         return result;
     }
-    const getUserName = (id) => {
-        let result;
-        $.ajax({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            url : '{{route('get.username')}}',
-            type : 'post',
-            data : {'id' : id},
-            success : function(res) {
-                result = res.student_id + res.username;
-                return result;
-            }
-        })
-    }
     const modalMake = (url, id) => {
         $.ajax({
             headers: {
@@ -74,6 +60,7 @@
             type : 'post',
             data : {'url' : url, 'id' : id, 'detail' : '{{$detail}}', 'category' : '{{$category}}'},
             success : function(res) {
+                $('#move-modal').attr({'data-url' : url, 'data-id' : id, 'data-detail' : '{{$detail}}', 'data-category' : '{{$category}}'});
                 //path 보여주기
                 if(res.path) {
                     let path = res.path.reduce((acc,cur) => {
@@ -88,14 +75,18 @@
 
                 //list 뿌려주기
                 let list = res.html.reduce((acc, cur) => {
-                    acc += `<tr class="folder-tr" data-url="${cur.url}">`;
-                    if(!cur.extension) acc += `<td><img src="{{asset('/public/images/folder_icon.svg')}}" class="folder-icon" alt="folder_icon"></td>`;
-                    else acc += `<td><img src="{{asset('/public/images/txt_icon.svg')}}" class="folder-icon" alt="folder_icon"></td>`;
-                    acc += `
-                                <td>${cur.title}</td>
-                                <td>${cur.created_at}</td>
-                                <td>${getFileSize(cur.size)}</td>
-                                <td>${getUserName(cur.user_id)}</td>
+                    if(!cur.extension) acc += `<tr class="folder-tr" data-url="${cur.url}" data-id="${cur.id}">
+                                                <td><img src="{{asset('/public/images/folder_icon.svg')}}" class="folder-icon" alt="folder_icon"></td>`;
+                    else acc += `<tr>
+                                <td><img src="{{asset('/public/images/txt_icon.svg')}}" class="folder-icon" alt="folder_icon"></td>`;
+
+                    acc += `<td>${cur.title}</td>`;
+
+                    if(cur.updated_at) acc += `<td>${cur.updated_at}</td>`;
+                    else acc += `<td>${cur.created_at}</td>`;
+
+                    acc += `<td>${getFileSize(cur.size)}</td>
+                            <td>${cur.user.student_id + cur.user.username}</td>
                             </tr>`;
                     return acc;
                 },'');

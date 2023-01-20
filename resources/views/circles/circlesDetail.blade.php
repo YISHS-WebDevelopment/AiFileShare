@@ -20,7 +20,7 @@
                 </div>
             </div>
             <div class="d-flex">
-                <a href="{{route('circles.share',[$detail,$category])}}" class="mr-3"><button class="btn btn-success">공유폴더</button></a>
+                <a href="{{route('folder.index',[$detail,$category,null])}}" class="mr-3"><button class="btn btn-success">공유폴더</button></a>
                 <a href="{{route('board.detail',[$detail,$category])}}"><button class="btn btn-primary">게시판</button></a>
             </div>
     </div>

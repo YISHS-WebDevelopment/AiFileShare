@@ -1,8 +1,11 @@
 <div class="modal fade" id="move-modal">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header d-flex flex-column">
                 <h3 class="modal-title d-flex">..</h3>
+                <div class="d-flex">
+                    <span class="important-icon text-danger">*</span><span id="read-text">상위 폴더로 이동하려면 ..이나 폴더 이름을 클릭해주세요.</span>
+                </div>
             </div>
             <div class="modal-body">
                 <table class="table">
