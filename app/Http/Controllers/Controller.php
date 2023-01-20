@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Circle;
 use App\File;
 use App\Folder;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -14,17 +15,45 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-    //현재 폴더의 path 를 배열로 쪼개서 return 해주는 함수
-    public function getCurFolderPath($id , $result)
+    public function parentPathArr($find, $detail, $category)
     {
-        $folder = Folder::find($id);
-        if(is_null($folder->folder_id)) {
-            return $result;
+        if($find) {
+            $parent_arr = [];
+            $cnt = 0;
+            while (true) {
+                if ($cnt === 0) {
+                    $dir = Folder::where('id', $find->folder_id)->first();
+                    if (!is_null($dir)) $parent_arr[] = $dir;
+                }
+                if (is_null($dir)) {
+                    break;
+                } else {
+                    $dir = Folder::where('id', $dir->folder_id)->first();
+                    if (!is_null($dir)) $parent_arr[] = $dir;
+                }
+                $cnt++;
+            }
+            $parent_arr = array_reverse($parent_arr);
+            $parent_arr[] = $find;
+            $html = Folder::where('folder_id', $find->id)->get()->merge(File::where('folder_id', $find->id)->get());
+
+            $result = [
+                'path' => $parent_arr,
+                'current' => $find,
+                'parent' => Folder::find($find->folder_id),
+                'html' => $html->all(),
+            ];
         } else {
-            $result[] = $id;
-            $this->getCurFolderPath($folder->folder_id, $result);
+            $html = Folder::where(['circle_id' => Circle::where('detail', $detail)->first()->id, 'category' => $category, 'folder_id' => null])->get();
+            $result = [
+                'path' => '',
+                'current' => '',
+                'parent' => '',
+                'html' => $html,
+            ];
         }
 
+        return $result;
     }
 
     //파일을 생성&삭제 할 때 상위 폴더의 사이즈를 계산해주는 함수

@@ -2,32 +2,7 @@
 
 @section('script')
     <script src="{{asset('/public/js/circles/folder.js')}}"></script>
-    <script>
-        $(document)
-            .on('click', '#rename-btn', function() {
-                const rename = $('#rename');
-                $.ajax({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    url : '{{route('folder.rename')}}',
-                    type : 'post',
-                    data : {'id' : rename.attr('data-id'), 'title' : $('#rename-modal #folder-input').val()},
-                    success : function(res) {
-                        console.log(res);
-                        rename.attr('data-title', res.title);
-                        if(!res) return alert('중복되는 폴더 이름이 있습니다.');
-
-                        $('#rename-modal').modal('hide');
-                        $(`#folder_${res.id}`).html(res.title);
-
-                    },
-                    error : function(res) {
-                        console.log(res);
-                    }
-                })
-            })
-    </script>
+    @include('folders.folderAjax')
 @endsection
 @section('style')
     <link rel="stylesheet" href="{{asset('/public/css/folder/folder.css')}}">
@@ -126,7 +101,7 @@
                                 <a class="dropdown-item" href="#" id="rename" data-toggle="modal"
                                    data-target="#rename-modal" data-title="{{$folder->title}}"
                                    data-id="{{$folder->id}}">이름 바꾸기</a>
-                                <a class="dropdown-item" href="#">다음으로 이동</a>
+                                <a class="dropdown-item move-btn" data-url="null" data-id="{{$folder->id}}" href="#" data-toggle="modal" data-target="#move-modal">다음으로 이동</a>
                                 <a class="dropdown-item" href="{{route('folder.zip.down',[$detail,$category,$folder->id])}}">다운(ZIP)</a>
                                 <form action="">
                                     <a class="dropdown-item" href="{{route('folder.delete',[$folder->id])}}"
@@ -169,7 +144,7 @@
                 <form action="{{route('folder.create',[$detail,$category])}}" method="post">
                     @csrf
                     <div class="modal-body">
-                        <input type="text" id="folder-input" placeholder="폴더 이름을 입력해주세요." name="title"
+                        <input type="text" id="folder-input" placeholder="폴더 이름을 입력해주세요." name="title" required
                                class="form-control">
                     </div>
                     <div class="modal-footer">
@@ -199,4 +174,5 @@
             </div>
         </div>
     </div>
+    @include('folders.folderMove')
 @endsection

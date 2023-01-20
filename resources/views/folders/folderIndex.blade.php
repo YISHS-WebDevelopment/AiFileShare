@@ -2,31 +2,7 @@
 
 @section('script')
     <script src="{{asset('/public/js/circles/folder.js')}}"></script>
-    <script>
-        $(document)
-            .on('click', '#rename-btn', function() {
-                const rename = $('#rename');
-                $.ajax({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    url : '{{route('folder.rename')}}',
-                    type : 'post',
-                    data : {'id' : rename.attr('data-id'), 'title' : $('#rename-modal #folder-input').val()},
-                    success : function(res) {
-                        console.log(res);
-                        rename.attr('data-title', res.title);
-                        if(!res) return alert('중복되는 폴더 이름이 있습니다.');
-
-                        $('#rename-modal').modal('hide');
-                        $('.date-td').html(res.updated_at);
-                    },
-                    error : function(res) {
-                        console.log(res);
-                    }
-                })
-            })
-    </script>
+    @include('folders.folderAjax')
 @endsection
 @section('style')
     <link rel="stylesheet" href="{{asset('/public/css/folder/folder.css')}}">
@@ -37,18 +13,19 @@
         <hr>
         <div class="container">
             <div class="d-flex justify-content-between">
-                <div class="d-flex flex-column">
+                <div class="d-flex flex-column path-box">
                     <div class="d-flex">
                         <span id="important-icon">*</span><span id="read-text">상위 폴더로 이동하려면 ..을 클릭해주세요.</span>
                     </div>
                     @if(is_null($parent))
-                        <h1><a href="{{route('circles.share',[$detail,$category])}}">..</a>/{{$find['title']}}</h1>
+                        <h1 style="cursor: pointer"><a href="{{route('circles.share',[$detail,$category])}}">.. </a>/{{$find->title}}</h1>
                     @else
-                        @if(!is_null($path))
-                            <h1><a href="{{route('folder.index',[$parent->circle->detail,$category,$parent['url']])}}">..</a>{{$path}}/{{$find['title']}}</h1>
-                        @else
-                            <h1><a href="{{route('folder.index',[$parent->circle->detail,$category,$parent['url']])}}">..</a>{{$path}}/{{$find['title']}}</h1>
-                        @endif
+                        <h1>
+                            <a href="{{route('folder.index',[$parent->circle->detail,$category,$parent->url])}}">..</a>
+                        @foreach($parent_arr['path'] as $folder)
+                            <a href="{{route('folder.index', [$folder->circle->detail, $category, $folder->url])}}">/{{$folder->title}}</a>
+                        @endforeach
+                        </h1>
                     @endif
                 </div>
                 <div class="d-flex justify-content-between align-items-center">
@@ -132,7 +109,7 @@
                                 <a class="dropdown-item" href="#" id="rename" data-toggle="modal"
                                    data-target="#rename-modal" data-title="{{$folder->title}}"
                                    data-id="{{$folder->id}}">이름 바꾸기</a>
-                                <a class="dropdown-item" href="#">다음으로 이동</a>
+                                <a class="dropdown-item move-btn" data-url="{{$url}}" data-id="{{$folder->id}}" href="#" data-toggle="modal" data-target="#move-modal">다음으로 이동</a>
                                 <a class="dropdown-item" href="{{route('folder.zip.down',[$detail,$category,$folder->id])}}">다운(ZIP)</a>
                                 <a class="dropdown-item" href="{{route('folder.delete',[$folder->id])}}" onclick="return confirm('정말 삭제하시겠습니까? 하부 폴더와 파일들이 모두 삭제됩니다.')">삭제</a>
                             </div>
@@ -155,7 +132,7 @@
                                aria-haspopup="true" aria-expanded="false">
                             </a>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                <a class="dropdown-item" href="#">다음으로 이동</a>
+                                <a class="dropdown-item move-btn" data-url="{{$url}}" data-id="{{$file->folder_id}}" href="#" data-toggle="modal" data-target="#move-modal">다음으로 이동</a>
                                 <a class="dropdown-item" href="{{route('file.download',[$file->id])}}">다운로드</a>
                                 <a class="dropdown-item" href="{{route('file.delete',[$file->id])}}" onclick="return confirm('정말 삭제하시겠습니까?')">삭제</a>
                             </div>
@@ -178,7 +155,7 @@
                 <form action="{{route('folder.create',[$detail,$category,$find->url])}}" method="post">
                     @csrf
                     <div class="modal-body">
-                        <input type="text" id="folder-input" placeholder="폴더 이름을 입력해주세요." name="title"
+                        <input type="text" id="folder-input" placeholder="폴더 이름을 입력해주세요." name="title" required
                                class="form-control">
                     </div>
                     <div class="modal-footer">
@@ -201,7 +178,7 @@
                 <form enctype="multipart/form-data" action="{{route('file.create', $find->url)}}" method="post">
                     @csrf
                     <div class="modal-body">
-                        <input type="file" name="file">
+                        <input type="file" name="file" required>
                     </div>
                     <div class="modal-footer">
                         <button class="btn btn-primary" type="submit">업로드</button>
@@ -228,4 +205,6 @@
             </div>
         </div>
     </div>
+
+    @include('folders.folderMove')
 @endsection
