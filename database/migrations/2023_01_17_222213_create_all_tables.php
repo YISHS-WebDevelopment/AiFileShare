@@ -41,7 +41,6 @@ class CreateAllTables extends Migration
             $table->foreignId('circle_id')->constrained();
             $table->string('title');
             $table->integer('folder_id')->nullable();
-            $table->integer('root_id')->nullable();
             $table->string('category')->nullable();
             $table->string('url')->nullable();
             $table->bigInteger('size')->default(0);

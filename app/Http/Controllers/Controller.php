@@ -36,7 +36,7 @@ class Controller extends BaseController
             }
             $parent_arr = array_reverse($parent_arr);
             $parent_arr[] = $find;
-            $html = Folder::where('folder_id', $find->id)->get()->merge(File::where('folder_id', $find->id)->get());
+            $html = Folder::where('folder_id', $find->id)->get()->mergeRecursive(File::where('folder_id', $find->id)->get());
 
             $result = [
                 'path' => $parent_arr,
@@ -45,12 +45,15 @@ class Controller extends BaseController
                 'html' => $html->all(),
             ];
         } else {
-            $html = Folder::where(['circle_id' => Circle::where('detail', $detail)->first()->id, 'category' => $category, 'folder_id' => null])->get();
+            $circle_id = Circle::where('detail', $detail)->first()->id;
+
+            $html = Folder::where(['circle_id' => $circle_id, 'category' => $category])->whereNull('folder_id')->get()->
+                    mergeRecursive(File::where(['circle_id' => $circle_id, 'category' => $category])->whereNull('folder_id')->get());
 
             $result = [
-                'path' => '',
-                'current' => '',
-                'parent' => '',
+                'path' => null,
+                'current' => null,
+                'parent' => null,
                 'html' => $html,
             ];
         }

@@ -37,8 +37,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/folderManager/folderCreate/{detail}/{category}/{url?}', [FolderController::class, 'folderCreate'])->name('folder.create');
     Route::get('/folder/delete/{id}', [FolderController::class, 'folderDelete'])->name('folder.delete');
     Route::post('/folder/rename', [FolderController::class, 'folderRename'])->name('folder.rename');
-    Route::get('/folder/zipDown/{detail}/{category}/{id}', [FolderController::class, 'folderZipDown'])->name('folder.zip.down');
+    Route::get('/folder/zipDown/{id}', [FolderController::class, 'folderZipDown'])->name('folder.zip.down');
     Route::post('/folder/move', [FolderController::class, 'folderMove'])->name('folder.move');
+    Route::post('/folder/move/action', [FolderController::class, 'folderMoveAction'])->name('folder.move.action');
 
     //파일
     Route::post('/file/create/{detail}/{category}/{url?}', [FileController::class, 'fileCreate'])->name('file.create');
