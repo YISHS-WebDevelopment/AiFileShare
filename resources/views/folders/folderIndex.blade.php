@@ -9,7 +9,12 @@
 @endsection
 @section('contents')
     <div class="container">
-        <h1 class="font-weight-bold">{{$detail}}({{$category === 'all' ? '전체' : $category.'학년'}})</h1>
+        <div class="d-flex justify-content-between align-items-center">
+            <h1 class="font-weight-bold">{{$detail}}({{$category === 'all' ? '전체' : $category.'학년'}})</h1>
+            <a href="{{route('circles.detail',[$detail, $category])}}">
+                <button class="btn btn-secondary">←</button>
+            </a>
+        </div>
         <hr>
         <div class="container">
             <div class="d-flex justify-content-between">
@@ -19,7 +24,7 @@
                     @else
                         <h1>
                             @if(!$parent)
-                            <a href="{{route('folder.index',[$detail,$category])}}">..</a>
+                                <a href="{{route('folder.index',[$detail,$category])}}">..</a>
                             @else
                                 <a href="{{route('folder.index',[$parent->circle->detail,$category, $parent->url])}}">..</a>
                             @endif
@@ -46,6 +51,9 @@
                 </div>
             </div>
             <hr>
+        </div>
+        <div class="d-flex">
+            <span id="important-icon">*</span><span id="read-text">빈 폴더는 zip폴더에 포함 되지 않습니다.</span>
         </div>
         <table class="table pl-4 pr-4 rounded shadow">
             <thead>
@@ -123,15 +131,29 @@
                                     <a class="dropdown-item" href="#" id="rename" data-toggle="modal"
                                        data-target="#rename-modal" data-title="{{$item->title}}"
                                        data-id="{{$item->id}}">이름 바꾸기</a>
-                                    <a class="dropdown-item move-btn" data-url="{{$url}}" data-id="{{$item->id}}"
-                                       href="#" data-toggle="modal" data-target="#move-modal">다음으로 이동</a>
+                                    @if(is_null($item->folder_id))
+                                        <a class="dropdown-item move-btn" data-url="{{$url}}" data-id="null" data-tg="{{$item->id}}"
+                                           href="#" data-toggle="modal" data-target="#move-modal" data-type="folder">다음으로
+                                            이동</a>
+                                    @else
+                                        <a class="dropdown-item move-btn" data-url="{{$url}}" data-id="{{$item->folder_id}}" data-tg="{{$item->id}}"
+                                           href="#" data-toggle="modal" data-target="#move-modal" data-type="folder">다음으로
+                                            이동</a>
+                                    @endif
                                     <a class="dropdown-item"
-                                       href="{{route('folder.zip.down',[$detail,$category,$item->id])}}">다운로드</a>
+                                       href="{{route('folder.zip.down',[$item->id])}}">다운로드</a>
                                     <a class="dropdown-item" href="{{route('folder.delete',[$item->id])}}"
                                        onclick="return confirm('정말 삭제하시겠습니까? 하부 폴더와 파일들이 모두 삭제됩니다.')">삭제</a>
                                 @else
-                                    <a class="dropdown-item move-btn" data-url="{{$url}}" data-id="{{$item->folder_id}}"
-                                       href="#" data-toggle="modal" data-target="#move-modal">다음으로 이동</a>
+                                    @if(is_null($item->folder_id))
+                                        <a class="dropdown-item move-btn" data-url="{{$url}}" data-id="null" data-tg="{{$item->id}}"
+                                           href="#" data-toggle="modal" data-target="#move-modal" data-type="file">다음으로
+                                            이동</a>
+                                    @else
+                                        <a class="dropdown-item move-btn" data-url="{{$url}}" data-id="{{$item->folder_id}}" data-tg="{{$item->id}}"
+                                           href="#" data-toggle="modal" data-target="#move-modal" data-type="file">다음으로
+                                            이동</a>
+                                    @endif
                                     <a class="dropdown-item" href="{{route('file.download',[$item->id])}}">다운로드</a>
                                     <a class="dropdown-item" href="{{route('file.delete',[$item->id])}}"
                                        onclick="return confirm('정말 삭제하시겠습니까?')">삭제</a>

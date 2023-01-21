@@ -23,7 +23,7 @@ class FileController extends Controller
             $find = Folder::where('url', $url)->first();
             $find_file = File::where('title', $file_data['name'])->where('folder_id', $find['id'])->first();
             if (!is_null($find_file)) {
-                return back()->with('msg', '이미 존재하는 파일입니다 파일명을 바꾸고 업로드 하시거나 기존 파일을 삭제해 주세요');
+                return back()->with('msg', '이미 존재하는 파일명입니다 파일명을 바꾸고 업로드 하시거나 기존 파일을 삭제해 주세요');
             } else {
                 Storage::putFileAs($find->path, $request->file, $file_data['name']);
 

@@ -17,4 +17,8 @@ class File extends Model
     public function folder() {
         return $this->hasOne(Folder::class, 'id', 'folder_id');
     }
+
+    public function circle() {
+        return $this->belongsTo(Circle::class);
+    }
 }
