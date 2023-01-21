@@ -198,11 +198,15 @@
                     <span class="font-weight-bold" style="cursor: pointer;font-size: 1.2rem"
                           data-dismiss="modal">X</span>
                 </div>
+
                 <form enctype="multipart/form-data" action="{{route('file.create', [$detail,$category,$url])}}"
                       method="post">
                     @csrf
                     <div class="modal-body">
-                        <input type="file" name="file" required>
+                        <div class="d-flex">
+                            <span id="important-icon">*</span><span id="read-text">Ctrl/Shift로 다중 선택이 가능합니다.</span>
+                        </div>
+                        <input type="file" name="file[]" class="form-control" multiple required>
                     </div>
                     <div class="modal-footer">
                         <button class="btn btn-primary" type="submit">업로드</button>
