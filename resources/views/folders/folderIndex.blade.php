@@ -165,6 +165,9 @@
             @endforeach
             </tbody>
         </table>
+        <div class="d-flex justify-content-center">
+            {{ $allFolderAndFiles->links() }}
+        </div>
     </div>
 
     <div class="modal fade" id="share-modal">
@@ -206,7 +209,10 @@
                         <div class="d-flex">
                             <span id="important-icon">*</span><span id="read-text">Ctrl/Shift로 다중 선택이 가능합니다.</span>
                         </div>
-                        <input type="file" name="file[]" class="form-control" multiple required>
+                        <div class="d-flex">
+                            <span id="important-icon">*</span><span id="read-text">파일은 한 번에 최대 10개까지 업로드 가능합니다.</span>
+                        </div>
+                        <input type="file" name="file[]" class="file-input form-control" multiple required>
                     </div>
                     <div class="modal-footer">
                         <button class="btn btn-primary" type="submit">업로드</button>
