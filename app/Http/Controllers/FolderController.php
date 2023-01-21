@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Circle;
 use App\File;
 use App\Folder;
-use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
@@ -17,12 +16,13 @@ class FolderController extends Controller
         $circle_id = Circle::where('detail', $detail)->first()->id;
         if ($url) {
             $find = Folder::where('url', $url)->first();
-            $allFolderAndFiles = Folder::where(['folder_id' => $find->id, 'circle_id' => $circle_id, 'category' => $category])->get()->mergeRecursive(File::where('folder_id', $find->id)->get());
+            $allFolderAndFiles = Folder::where(['folder_id' => $find->id, 'circle_id' => $circle_id, 'category' => $category])->get()
+                                ->mergeRecursive(File::where('folder_id', $find->id)->get())->paginate(10);
             $parent = Folder::find($find->folder_id);
             $parent_arr = $this->parentPathArr($find, $detail, $category);
         } else {
             $allFolderAndFiles = Folder::where(['circle_id' => $circle_id, 'category' => $category])->whereNull('folder_id')->get()
-                ->mergeRecursive(File::where(['circle_id' => $circle_id, 'category' => $category])->whereNull('folder_id')->get());
+                ->mergeRecursive(File::where(['circle_id' => $circle_id, 'category' => $category])->whereNull('folder_id')->get())->paginate(10);
             $find = null;
             $parent = null;
             $parent_arr = null;

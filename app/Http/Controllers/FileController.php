@@ -14,6 +14,7 @@ class FileController extends Controller
 {
     public function fileCreate(Request $request, $detail, $category, $url = null)
     {
+        if(count($request->file) > 10) return back()->with('msg', '파일은 최대 10개까지만 업로드 할 수 있습니다.');
         $file_data = $_FILES['file'];
         foreach($request->file as $idx => $item) {
             $tmp = explode('.', $file_data['name'][$idx]);
