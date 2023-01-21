@@ -55,11 +55,11 @@
     <br>
     -폴더와 파일 용량 보여주기(<img src="https://img.shields.io/badge/O-green?style=flat-square&logo=&logoColor="/>)
     <br>
-    -폴더와 파일 이동(<img src="https://img.shields.io/badge/△-yellow?style=flat-square&logo=&logoColor="/>)
+    -폴더와 파일 이동(<img src="https://img.shields.io/badge/O-green?style=flat-square&logo=&logoColor="/>)
     <br>
     -폴더와 파일 삭제(<img src="https://img.shields.io/badge/O-green?style=flat-square&logo=&logoColor="/>)
     <br>
-    -이름, 날짜, 용량 순으로 정렬 가능(<img src="https://img.shields.io/badge/X-red?style=flat-square&logo=&logoColor="/>)
+    -이름, 날짜, 용량 순으로 정렬 가능(<img src="https://img.shields.io/badge/△-yellow?style=flat-square&logo=&logoColor="/>)
     <br>
     -파일 확장자에 따른 아이콘 보여주기(<img src="https://img.shields.io/badge/X-red?style=flat-square&logo=&logoColor="/>)
     <hr>
