@@ -45,7 +45,7 @@ class CreateAllTables extends Migration
             $table->string('url')->nullable();
             $table->bigInteger('size')->default(0);
             $table->string('path');
-            $table->timestamps();
+            $table->dateTime('created_at')->useCurrent();
         });
         Schema::create('files', function (Blueprint $table) {
             $table->id();

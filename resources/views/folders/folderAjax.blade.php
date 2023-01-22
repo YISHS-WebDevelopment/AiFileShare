@@ -17,7 +17,7 @@
 
                         $('#rename-modal').modal('hide');
                         $(`#folder_${res.id}`).html(res.title);
-                        $('.date-td').html(res.updated_at);
+                        $('.date-td').html(res.created_at);
                     },
                     error: function (res) {
                         console.log(res);
@@ -56,7 +56,7 @@
                     data: {'type': type, 'id': id, 'target': target},
                     success: function (res) {
                         alert(res.msg);
-                        if(res.state) return location.reload();
+                        if (res.state) return location.reload();
                     },
                     error: function (res) {
                         console.log(res);
@@ -99,15 +99,13 @@
                                                 <td><img src="{{asset('/public/images/folder_icon.svg')}}" class="folder-icon" alt="folder_icon"></td>`;
                     else acc += `<tr>
                                 <td><img src="{{asset('/public/images/txt_icon.svg')}}" class="folder-icon" alt="folder_icon"></td>`;
-
-                    acc += `<td>${cur.title}</td>`;
-
-                    if (cur.updated_at) acc += `<td>${cur.updated_at}</td>`;
-                    else acc += `<td>${cur.created_at}</td>`;
-
-                    acc += `<td>${getFileSize(cur.size)}</td>
+                    acc += `
+                            <td>${cur.title}</td>
+                            <td>${cur.created_at}</td>
+                            <td>${getFileSize(cur.size)}</td>
                             <td>${cur.user.student_id + cur.user.username}</td>
-                            </tr>`;
+                            </tr>
+                           `;
                     return acc;
                 }, '');
                 $('#move-modal tbody').html(list);

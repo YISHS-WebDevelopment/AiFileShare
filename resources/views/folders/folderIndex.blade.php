@@ -55,19 +55,24 @@
         <div class="d-flex">
             <span id="important-icon">*</span><span id="read-text">빈 폴더는 zip폴더에 포함 되지 않습니다.</span>
         </div>
-        <table class="table pl-4 pr-4 rounded shadow">
+        <table class="table pl-4 pr-4 rounded shadow list-table">
             <thead>
             <tr>
                 <th><i id="file-icon" class="fa-solid fa-file"></i></th>
                 <th>
-                    <div class="dropdown show">
+                    <div class="dropdown show w-100 h-100">
                         <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
                            aria-haspopup="true" aria-expanded="false">
-                            이름 ↑
+                            이름
+                            @if($sort === 'textAsc')
+                                ↑
+                            @elseif($sort === 'textDesc')
+                                ↓
+                            @endif
                         </a>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <a class="dropdown-item" href="#">텍스트 오름차순</a>
-                            <a class="dropdown-item" href="#">텍스트 내림차순</a>
+                            <a class="dropdown-item" href="?sort=textAsc">텍스트 오름차순</a>
+                            <a class="dropdown-item" href="?sort=textDesc">텍스트 내림차순</a>
                         </div>
                     </div>
                 </th>
@@ -76,10 +81,15 @@
                         <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
                            aria-haspopup="true" aria-expanded="false">
                             수정한 날짜
+                            @if($sort === 'old')
+                                ↑
+                            @elseif($sort === 'recent')
+                                ↓
+                            @endif
                         </a>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <a class="dropdown-item" href="#">오래된 순</a>
-                            <a class="dropdown-item" href="#">최신 순</a>
+                            <a class="dropdown-item" href="?sort=old">오래된 순</a>
+                            <a class="dropdown-item" href="?sort=recent">최신 순</a>
                         </div>
                     </div>
                 </th>
@@ -88,10 +98,15 @@
                         <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
                            aria-haspopup="true" aria-expanded="false">
                             파일 크기
+                            @if($sort === 'sm')
+                                ↑
+                            @elseif($sort === 'big')
+                                ↓
+                            @endif
                         </a>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <a class="dropdown-item" href="#">작은 숫자순</a>
-                            <a class="dropdown-item" href="#">큰 숫자순</a>
+                            <a class="dropdown-item" href="?sort=sm">작은 숫자순</a>
+                            <a class="dropdown-item" href="?sort=big">큰 숫자순</a>
                         </div>
                     </div>
                 </th>
@@ -109,11 +124,7 @@
                             <a id="folder_{{$item->id}}"
                                href="{{route('folder.index',[$detail,$category,$item->url])}}">{{$item->title}}</a>
                         </td>
-                        @if(is_null($item->updated_at))
-                            <td class="date-td">{{date('Y-m-d',strtotime($item->created_at))}}</td>
-                        @else
-                            <td class="date-td">{{date('Y-m-d',strtotime($item->updated_at))}}</td>
-                        @endif
+                        <td class="date-td">{{date('Y-m-d',strtotime($item->created_at))}}</td>
                     @else
                         <td><img src="{{asset('/public/images/txt_icon.svg')}}" class="folder-icon" alt="folder_icon">
                         </td>
@@ -132,11 +143,13 @@
                                        data-target="#rename-modal" data-title="{{$item->title}}"
                                        data-id="{{$item->id}}">이름 바꾸기</a>
                                     @if(is_null($item->folder_id))
-                                        <a class="dropdown-item move-btn" data-url="{{$url}}" data-id="null" data-tg="{{$item->id}}"
+                                        <a class="dropdown-item move-btn" data-url="{{$url}}" data-id="null"
+                                           data-tg="{{$item->id}}"
                                            href="#" data-toggle="modal" data-target="#move-modal" data-type="folder">다음으로
                                             이동</a>
                                     @else
-                                        <a class="dropdown-item move-btn" data-url="{{$url}}" data-id="{{$item->folder_id}}" data-tg="{{$item->id}}"
+                                        <a class="dropdown-item move-btn" data-url="{{$url}}"
+                                           data-id="{{$item->folder_id}}" data-tg="{{$item->id}}"
                                            href="#" data-toggle="modal" data-target="#move-modal" data-type="folder">다음으로
                                             이동</a>
                                     @endif
@@ -146,11 +159,13 @@
                                        onclick="return confirm('정말 삭제하시겠습니까? 하부 폴더와 파일들이 모두 삭제됩니다.')">삭제</a>
                                 @else
                                     @if(is_null($item->folder_id))
-                                        <a class="dropdown-item move-btn" data-url="{{$url}}" data-id="null" data-tg="{{$item->id}}"
+                                        <a class="dropdown-item move-btn" data-url="{{$url}}" data-id="null"
+                                           data-tg="{{$item->id}}"
                                            href="#" data-toggle="modal" data-target="#move-modal" data-type="file">다음으로
                                             이동</a>
                                     @else
-                                        <a class="dropdown-item move-btn" data-url="{{$url}}" data-id="{{$item->folder_id}}" data-tg="{{$item->id}}"
+                                        <a class="dropdown-item move-btn" data-url="{{$url}}"
+                                           data-id="{{$item->folder_id}}" data-tg="{{$item->id}}"
                                            href="#" data-toggle="modal" data-target="#move-modal" data-type="file">다음으로
                                             이동</a>
                                     @endif

@@ -11,24 +11,45 @@ use Illuminate\Support\Facades\Storage;
 
 class FolderController extends Controller
 {
-    public function folderView($detail, $category, $url = null)
+    public function folderView(Request $request, $detail, $category, $url = null)
     {
         $circle_id = Circle::where('detail', $detail)->first()->id;
         if ($url) {
             $find = Folder::where('url', $url)->first();
             $allFolderAndFiles = Folder::where(['folder_id' => $find->id, 'circle_id' => $circle_id, 'category' => $category])->get()
-                                ->mergeRecursive(File::where('folder_id', $find->id)->get())->paginate(10);
+                ->mergeRecursive(File::where('folder_id', $find->id)->get());
             $parent = Folder::find($find->folder_id);
             $parent_arr = $this->parentPathArr($find, $detail, $category);
         } else {
             $allFolderAndFiles = Folder::where(['circle_id' => $circle_id, 'category' => $category])->whereNull('folder_id')->get()
-                ->mergeRecursive(File::where(['circle_id' => $circle_id, 'category' => $category])->whereNull('folder_id')->get())->paginate(10);
+                ->mergeRecursive(File::where(['circle_id' => $circle_id, 'category' => $category])->whereNull('folder_id')->get());
             $find = null;
             $parent = null;
             $parent_arr = null;
         }
 
-        return view('folders/folderIndex', compact(['detail', 'category', 'url', 'find', 'allFolderAndFiles', 'parent', 'parent_arr']));
+        $sort = $request->sort;
+
+        if (!is_null($sort)) {
+            if ($sort === 'textAsc') $allFolderAndFiles = $allFolderAndFiles->sortBy('title');
+            else if ($sort === 'textDesc') $allFolderAndFiles = $allFolderAndFiles->sortByDesc('title');
+            else if ($sort === 'old') $allFolderAndFiles = $allFolderAndFiles->sortBy('created_at');
+            else if ($sort === 'recent') $allFolderAndFiles = $allFolderAndFiles->sortByDesc('created_at');
+            else if ($sort === 'sm') $allFolderAndFiles = $allFolderAndFiles->sortBy('size');
+            else $allFolderAndFiles = $allFolderAndFiles->sortByDesc('size');
+        }
+
+        $folder = collect();
+        $file = collect();
+
+        foreach($allFolderAndFiles as $item) {
+            if(class_basename($item) === 'Folder') $folder->push($item);
+             else $file->push($item);
+        }
+
+        $allFolderAndFiles = $folder->merge($file)->paginate(10);
+
+        return view('folders/folderIndex', compact(['detail', 'category', 'url', 'find', 'allFolderAndFiles', 'parent', 'parent_arr', 'sort']));
     }
 
     public function folderCreate(Request $request, $detail, $category, $url = null)
@@ -128,12 +149,12 @@ class FolderController extends Controller
         $find->update([
             'title' => $request->title,
             'path' => $folderPath,
-            'updated_at' => now(),
+            'created_at' => now(),
         ]);
 
         Storage::move($request->session()->get('prevPath'), $folderPath);
 
-        $find->updated_at = date('Y-m-d', strtotime($find->updated_at));
+        $find->created_at = date('Y-m-d', strtotime($find->created_at));
 
         return $find;
     }
@@ -193,7 +214,7 @@ class FolderController extends Controller
     {
         $find = $request->type === 'folder' ? Folder::find($request->target) : File::find($request->target);
 
-        if($request->id !== 'null')  {
+        if ($request->id !== 'null') {
             $targetFolder = Folder::find($request->id);
             $newPath = $targetFolder->path . "/" . $find->title;
             $folder_id = $request->id;
@@ -205,7 +226,7 @@ class FolderController extends Controller
         //find 가 update 되면 기존의 path 를 가져올 수 없으니 session 에다가 저장
         $request->session()->flash('savePath', $find->path);
 
-        if($find->path === $newPath) return ['msg' => '같은 장소에는 옮길 수 없습니다.', 'state' => false];
+        if ($find->path === $newPath) return ['msg' => '같은 장소에는 옮길 수 없습니다.', 'state' => false];
 
         if ($request->type === 'folder') {
             foreach (Folder::where('folder_id', $folder_id)->get() as $item) {
@@ -217,7 +238,7 @@ class FolderController extends Controller
             $find->update([
                 'folder_id' => $folder_id,
                 'path' => $newPath,
-                'updated_at' => now(),
+                'created_at' => now(),
             ]);
         } else {
             foreach (File::where('folder_id', $folder_id)->get() as $item) {
@@ -225,7 +246,8 @@ class FolderController extends Controller
             }
             $find->update([
                 'folder_id' => $folder_id,
-                'path' => $newPath
+                'path' => $newPath,
+                'created_at' => now(),
             ]);
         }
 
