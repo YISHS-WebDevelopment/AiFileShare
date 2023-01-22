@@ -24,7 +24,7 @@
                 <hr>
                 <div class="d-flex flex-column">
                     @foreach($user as $u)
-                        <div class="d-flex mt-5 align-items-center" style="cursor: pointer" onclick="location.href='{{route('mypage.index',$user)}}'">
+                        <div class="d-flex mt-5 align-items-center" style="cursor: pointer" onclick="location.href='{{route('mypage.index',$u)}}'">
                             <div class="profile"><img src="/storage/app/{{$u->profile}}" alt=""></div>
                             <h5 class="ml-3">{{$u['student_id']}}-{{$u->username}}</h5>
                         </div>

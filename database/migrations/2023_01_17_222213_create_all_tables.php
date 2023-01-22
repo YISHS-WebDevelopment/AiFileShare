@@ -80,7 +80,7 @@ class CreateAllTables extends Migration
         Schema::create('boards_views', function (Blueprint $table) {
             $table->id();
             $table->foreignId('board_id')->constrained();
-            $table->foreignId('user_id')->constrained();
+                $table->foreignId('user_id')->constrained();
             $table->boolean('views')->default(0);
         });
         Schema::create('boards_likes', function (Blueprint $table) {
@@ -93,6 +93,15 @@ class CreateAllTables extends Migration
             $table->id();
             $table->string('name');
             $table->string('dir');
+        });
+        Schema::create('comments', function (Blueprint $table) {
+            $table->id();
+            $table->longText('contents');
+            $table->string('user_id');
+            $table->timestamp('created_at')->useCurrent();
+            $table->foreignId('comment_id')->nullable()->constrained();
+            $table->foreignId('board_id')->constrained();
+            $table->foreignId('modified')->nullable();
         });
     }
 

@@ -24,4 +24,9 @@ class Board extends Model
         return $this->hasMany(Boards_view::class, 'board_id', 'id')->where('user_id', auth()->user()->id);
     }
 
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
 }

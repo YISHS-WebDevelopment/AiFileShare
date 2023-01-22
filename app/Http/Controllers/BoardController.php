@@ -7,6 +7,7 @@ use App\Board_image;
 use App\Boards_image;
 use App\Boards_like;
 use App\Boards_view;
+use App\Comment;
 use App\Http\Controllers\Controller;
 use App\Post_img;
 use Illuminate\Http\Request;
@@ -117,6 +118,7 @@ class BoardController extends Controller
     public function detailView($id)
     {
         $board = Board::where('id', $id)->first();
+        $comments = $board->comments;
         if (auth()->user()->type === 'admin') {
             return view('board/boardDetailView', compact(['board']));
         }
@@ -131,7 +133,7 @@ class BoardController extends Controller
         $board->update([
             'views' => Boards_view::where('board_id', $board->id)->count(),
         ]);
-        return view('board/boardDetailView', compact(['board']));
+        return view('board/boardDetailView', compact(['board','comments']));
     }
 
     public function likeClick(Request $request)

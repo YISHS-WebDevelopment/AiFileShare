@@ -58,13 +58,17 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/post/modify/{board}', [BoardController::class, 'modifyAction'])->name('boardModify.action');
     Route::post('/board/like',[BoardController::class, 'likeClick'])->name('board.like');
     Route::get('/post/delete/{board}',[BoardController::class, 'delete'])->name('board.delete');
-// 관리자
+    //댓글
+    Route::post('/comment/write/{board}/{user}',[\App\Http\Controllers\CommentController::class, 'commentWrite'])->name('comment.write');
+
+    //관리자
     Route::get('/userpage/management/index',[\App\Http\Controllers\UserController::class, 'index'])->name('user.index');
 
-//마이페이지
+    //마이페이지
     Route::get('/mypage/{user}',[\App\Http\Controllers\MypageController::class, 'index'])->name('mypage.index');
     Route::put('/mypage/update/{user}',[\App\Http\Controllers\MypageController::class, 'update'])->name('user.update');
     Route::delete('/user/delete/{user}',[\App\Http\Controllers\UserController::class, 'delete'])->name('user.delete');
+
 
 });
 
