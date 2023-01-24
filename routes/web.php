@@ -68,7 +68,5 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/mypage/{user}',[\App\Http\Controllers\MypageController::class, 'index'])->name('mypage.index');
     Route::put('/mypage/update/{user}',[\App\Http\Controllers\MypageController::class, 'update'])->name('user.update');
     Route::delete('/user/delete/{user}',[\App\Http\Controllers\UserController::class, 'delete'])->name('user.delete');
-
-
 });
 
