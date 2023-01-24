@@ -77,7 +77,7 @@
     -최신, 좋아요, 조회 순으로 정렬 가능(<img src="https://img.shields.io/badge/O-green?style=flat-square&logo=&logoColor="/>)
     <hr>
     <h4>Admin</h4>
-    -모든 파일, 폴더 관리(수정, 삭제)(<img src="https://img.shields.io/badge/X-red?style=flat-square&logo=&logoColor="/>)
+    -모든 파일, 폴더 관리(삭제)(<img src="https://img.shields.io/badge/O-green?style=flat-square&logo=&logoColor="/>)
     <br>
     -모든 게시글 관리(수정, 삭제)(<img src="https://img.shields.io/badge/O-green?style=flat-square&logo=&logoColor="/>)
     <br>

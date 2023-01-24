@@ -147,12 +147,13 @@
                                    placeholder="소개글을 입력해주세요" value="{{$user->introduce}}">
                         </div>
 
-                        <div class="mt-3">
-                            <p>소속동아리</p>
-                            <input type="text" disabled value="{{$user->circle->name}}">
-                        </div>
+                        @if(auth()->user()->circle_id !== 0)
+                            <div class="mt-3">
+                                <p>소속동아리</p>
+                                <input type="text" disabled value="{{$user->circle->name}}">
+                            </div>
+                    @endif
                 </div>
-
             </div>
         </div>
     </div>
@@ -224,6 +225,7 @@
                             @php($time = explode(':',$date[2]))
                             <span
                                 class="mr-5"> {{$date[0].'년 '.$date[1].'월 '.$day[0].'일 '. is_bool(intval($time[0]) <= 12) ? '오전 '.(intval($time[0])-12) :'오후'.intval($time[0]) }}{{'시 '.$time[1].'분 '.$time[2].'초'}}</span>
+                            <a href="{{route('folder.delete', [$f->id])}}" onclick="return confirm('정말 삭제하시겠습니까? 하부 폴더와 파일들이 모두 삭제됩니다.')"><button class="btn btn-outline-danger">삭제</button></a>
                         </div>
                     </div>
                 </div>
@@ -238,23 +240,28 @@
             <hr>
             @foreach($myfiles as $file)
                 <div class="flex-column d-flex mb-3">
-                    <div class="post d-flex align-items-center justify-content-between"
-                         onclick="location.href='{{route('folder.index',[$file->folder->circle->detail,$file->folder['category'],$file->folder['url']])}}'">
-                        <a class="ml-3"
-                           href="{{route('folder.index',[$file->folder->circle->detail,$file->folder['category'],$file->folder['url']])}}">{{$file->title}}</a>
-                        <p>{{$file->size}}</p>
-                        <div class="d-flex">
-                            <span class="mr-5">{{$file->folder->user['username']}}</span>
-                            @php($date = explode('-',$file->folder->created_at))
-                            @php($day = explode(' ',$date[2]))
-                            @php($time = explode(':',$date[2]))
-                            <span
-                                class="mr-5"> {{$date[0].'년 '.$date[1].'월 '.$day[0].'일 '. is_bool(intval($time[0]) <= 12) ? '오전 '.(intval($time[0])-12) :'오후'.intval($time[0]) }}{{'시 '.$time[1].'분 '.$time[2].'초'}}</span>
+                    @if(!is_null($file->folder_id))
+                        <div class="post d-flex align-items-center justify-content-between"
+                             onclick="location.href='{{route('folder.index',[$file->circle->detail,$file->category,$file->folder['url']])}}'">
+                            @else
+                                <div class="post d-flex align-items-center justify-content-between"
+                                     onclick="location.href='{{route('folder.index',[$file->circle->detail,$file->category])}}'">
+                                    @endif
+                                    <a class="ml-3" href="#">{{$file->title}}</a>
+                                    <p>{{$file->size}}</p>
+                                    <div class="d-flex">
+                                        <span class="mr-5">{{$file->user->username}}</span>
+                                        @php($date = explode('-',$file->created_at))
+                                        @php($day = explode(' ',$date[2]))
+                                        @php($time = explode(':',$date[2]))
+                                        <span
+                                            class="mr-5"> {{$date[0].'년 '.$date[1].'월 '.$day[0].'일 '. is_bool(intval($time[0]) <= 12) ? '오전 '.(intval($time[0])-12) :'오후'.intval($time[0]) }}{{'시 '.$time[1].'분 '.$time[2].'초'}}</span>
+                                        <a href="{{route('file.delete', [$file->id])}}" onclick="return confirm('정말 삭제하시겠습니까?')"><button class="btn btn-outline-danger">삭제</button></a>
+                                    </div>
+                                </div>
                         </div>
-                    </div>
+                        @endforeach
                 </div>
-            @endforeach
         </div>
-    </div>
 
 @endsection

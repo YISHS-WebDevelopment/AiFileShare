@@ -71,14 +71,16 @@ class Controller extends BaseController
     public function folderSizeUpdate($id, $size, $type)
     {
         $findFolder = Folder::find($id);
-        if ($type === 'create') {
-            $findFolder->update([
-                'size' => $size + $findFolder->size,
-            ]);
-        } else {
-            $findFolder->update([
-                'size' => abs($findFolder->size - $size),
-            ]);
+        if(!is_null($id)) {
+            if ($type === 'create') {
+                $findFolder->update([
+                    'size' => $size + $findFolder->size,
+                ]);
+            } else {
+                $findFolder->update([
+                    'size' => abs($findFolder->size - $size),
+                ]);
+            }
         }
     }
 
