@@ -16,7 +16,8 @@ class CirclesController extends Controller
 
     public function detail($detail, $category)
     {
-        if($detail !== 'all' && auth()->user()->circle->detail !== $detail) return back()->with('msg', '다른 동아리페이지는 볼 수 없습니다.');
+        dd(auth()->user()->circle);
+        if($detail !== 'all' && auth()->user()->circle->detail !== $detail || auth()->user()->type !== 'admin') return back()->with('msg', '다른 동아리페이지는 볼 수 없습니다.');
         if($category !== 'all' && auth()->user()->grade != $category) return back()->with('msg', '다른 학년의 게시판은 볼 수 없습니다.');
 
         return view('circles/circlesDetail', compact(['detail', 'category']));

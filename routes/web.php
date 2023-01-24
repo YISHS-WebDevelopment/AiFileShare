@@ -60,6 +60,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/post/delete/{board}',[BoardController::class, 'delete'])->name('board.delete');
     //댓글
     Route::post('/comment/write/{board}/{user}',[\App\Http\Controllers\CommentController::class, 'commentWrite'])->name('comment.write');
+    Route::post('/comment/modify/{user}',[\App\Http\Controllers\CommentController::class, 'commentModify'])->name('comment.modify');
+    Route::get('/comment/delete/{comment}',[\App\Http\Controllers\CommentController::class, 'commentDelete'])->name('comment.delete');
 
     //관리자
     Route::get('/userpage/management/index',[\App\Http\Controllers\UserController::class, 'index'])->name('user.index');

@@ -16,6 +16,9 @@
 @section('script')
     <script>
         let dir = false;
+        let reply = false
+        let modify = false;
+        let action = '';
         $(() => {
             $(document)
                 .on('click', '.like-icon', function () {
@@ -40,10 +43,14 @@
                     })
                 })
                 .on('click', '#reply', function () {
+                    if (modify) {
+                        return alert('댓글을 수정하는 도중에 답글을 달수없습니다.');
+                    }
                     $('input[name="comment_id"]').val($(this).val());
                     $('.reply_state p').html('<- 답글 다는중...');
                     $('.reply_state button').css({'display': 'flex'});
                     $('.reply_state button').html('취소');
+                    reply = true;
 
                 })
                 .on('click', '#reply_cancel', function () {
@@ -51,33 +58,60 @@
                     $('.reply_state p').html('');
                     $('.reply_state button').css({'display': 'none'});
                     $('.reply_state button').html('');
-
+                    reply = false;
                 })
                 .on('click', '.reply_view', function () {
                     let id = $(this).attr('data-id');
-                    if (dir){
-                        $(`div[data-id="${id}"]`).css({'display':'none'});
+                    if (dir) {
+                        $(`div[data-id="${id}"]`).css({'display': 'none'});
                         chgDir();
                         dir = false;
-                    }
-                    else{
+                    } else {
                         console.log('z');
-                        $(`div[data-id="${id}"]`).css({'display':'block'});
+                        $(`div[data-id="${id}"]`).css({'display': 'block'});
                         chgDir();
                         dir = true;
                     }
                 })
+                .on('click', '.comment_modify', function () {
+                    if (reply) {
+                        return alert('답글을 다는도중에 수정 할 수없습니다.');
+                    }
+                    modify = true;
+                    let id = $(this).attr('data-id');
+                    let content = $(`.comment[data-id="${id}"]`).text();
+                    $('textarea[name="contents"]').html(content);
+                    $('.comment_submit').css({'display': 'none'});
+                    $('.comment_modify_btn').css({'display': 'flex'});
+                    $('.modify_id').val(id);
+                    action = $('#comment').attr('action');
+                    $('#comment').attr('action', `{{route('comment.modify',auth()->user())}}`);
+
+                    $('.reply_state p').html('<- 댓글 수정중...');
+                })
+
+                .on('click', '.modify_cancel', function () {
+                    let id = $(this).attr('data-id');
+                    let content = $(`.comment[data-id="${id}"]`).text();
+                    $('textarea[name="contents"]').html('');
+                    $('.reply_state p').html('');
+                    $('.modify_id').val('');
+                    $('#comment').attr('action', action);
+                    $('.comment_submit').css({'display': 'flex'});
+                    $('.comment_modify_btn').css({'display': 'none'});
+                    modify = false;
+                })
+
         })
 
         function chgDir() {
             if (dir) {
                 $('.chg_dir').html('▼');
-            }
-            else{
+            } else {
                 $('.chg_dir').html('▲');
             }
         }
-    </script>
+    </script>ㅅ
 @endsection
 @section('contents')
     <div>
@@ -138,30 +172,34 @@
 
                     </div>
                     <div class="p-2">
-                        <p class="ml-3">{{$comment['contents']}}</p>
+                        <p class="ml-3 comment" data-id="{{$comment->id}}">{{$comment['contents']}}</p>
                     </div>
                     <div class="d-flex w-100 justify-content-between">
                         <div class="d-flex">
                             <div>
+                                <button class="btn ml-3 " id="reply" value="{{$comment['id']}}">답글</button>
+
                                 @if(!is_null($reply_chk))
                                     <div class="d-flex">
                                         <div class="d-flex">
-                                            <p class="reply_view chg_dir" style="color: #47c51b;cursor: pointer" data-id="{{$comment['id']}}">▼</p>
+                                            <p class="reply_view chg_dir" style="color: #47c51b;cursor: pointer"
+                                               data-id="{{$comment['id']}}">▼</p>
                                             <div class="ml-3"
                                                  style="width: 20px;height: 20px;border-radius: 100%;overflow: hidden;">
                                                 <img class="w-100 h-100" style="object-fit: cover"
                                                      src="/storage/app/{{$comment->user->profile}}"
                                                      alt="">
                                             </div>
-                                            <p style="font-size: 14px;color: green;cursor: pointer" class="reply_view" data-id="{{$comment['id']}}">
+                                            <p style="font-size: 14px;color: green;cursor: pointer" class="reply_view"
+                                               data-id="{{$comment['id']}}">
                                                 답글 {{count($reply)}}
                                                 개</p>
                                         </div>
-                                        <button class="btn ml-3 " id="reply" value="{{$comment['id']}}">답글</button>
                                     </div>
                                     <div class="d-flex flex-column mt-2">
                                         @foreach($reply as $r)
-                                            <div style="font-size: 16px;display: none" class="w-100 ml-5 mt-3" data-id="{{$r['comment_id']}}">
+                                            <div style="font-size: 16px;display: none" class="w-100 ml-5 mt-3"
+                                                 data-id="{{$r['comment_id']}}">
                                                 <div class="d-flex align-items-center justify-content-between w-100">
                                                     <div class="d-flex align-items-center">
                                                         <div
@@ -179,12 +217,18 @@
                                                         class="mr-2"> {{$date[0].'년 '.$date[1].'월 '.$day[0].'일 '. is_bool(intval($time[0]) <= 12) ? '오전 '.(intval($time[0])-12) :'오후'.intval($time[0]) }}{{'시 '.$time[1].'분 '.$time[2].'초'}}</span>
                                                 </div>
                                                 <div class="p-2">
-                                                    <p class="ml-3">{{$r['contents']}}</p>
+                                                    <p class="ml-3 comment data-id="{{$comment->id}}
+                                                    "">{{$r['contents']}}</p>
                                                 </div>
-                                                @if($comment->user['id'] == auth()->user()->id)
+                                                @if($comment->user['id'] == auth()->user()->id || auth()->user()->type === 'admin')
                                                     <div>
-                                                        <button class="btn btn-outline-primary">수정</button>
-                                                        <button class="btn btn-outline-danger ml-2">삭제</button>
+                                                        <button class="btn btn-outline-primary comment_modify"
+                                                                data-id="{{$r->id}}">수정
+                                                        </button>
+                                                        <button class="btn btn-outline-danger ml-2 reply_delete"
+                                                                onclick="location.href='{{route('comment.delete',$r->id)}}'">
+                                                            삭제
+                                                        </button>
                                                     </div>
                                                 @endif
                                                 <hr>
@@ -192,12 +236,16 @@
                                         @endforeach
                                     </div>
                                 @endif
+
                             </div>
                         </div>
-                        @if($comment->user['id'] == auth()->user()->id)
+                        @if($comment->user['id'] == auth()->user()->id || auth()->user()->type === 'admin')
                             <div>
-                                <button class="btn btn-outline-primary">수정</button>
-                                <button class="btn btn-outline-danger ml-2">삭제</button>
+                                <button class="btn btn-outline-primary comment_modify" data-id="{{$comment->id}}">수정
+                                </button>
+                                <button class="btn btn-outline-danger ml-2 reply_delete"
+                                        onclick="location.href='{{route('comment.delete',$comment->id)}}'">삭제
+                                </button>
                             </div>
                         @endif
 
@@ -220,15 +268,19 @@
                         <button class="btn" style="display: none;" id="reply_cancel"></button>
                     </div>
                 </div>
-                <form action="{{route('comment.write',[$board,auth()->user()])}}" method="post">
+                <form action="{{route('comment.write',[$board,auth()->user()])}}" method="post" id="comment">
                     @csrf
                     @method('post')
                     <textarea class="w-100 mt-2" name="contents" id="" cols="30" rows="10"
                               placeholder="타인의 권리를 침해하거나 명예를 훼손하는 댓글은 운영원칙 및 관련 법률에 제제를 받을 수 있습니다.
 또한 도배나 의미없는 댓글을 달면 관리자가 응징합니다." required></textarea>
-                    <input type="hidden" name="comment_id">
-                    <div class="w-100 d-flex justify-content-end">
+                    <input type="hidden" name="comment_id" class="modify_id">
+                    <div class="w-100 justify-content-end comment_submit">
                         <button class="btn btn-outline-primary" type="submit">등록</button>
+                    </div>
+                    <div class="w-100 justify-content-end comment_modify_btn" style="display: none">
+                        <button class="btn btn-outline-primary" type="submit">수정</button>
+                        <button class="btn btn-outline-dark modify_cancel" type="button">취소</button>
                     </div>
                 </form>
             </div>

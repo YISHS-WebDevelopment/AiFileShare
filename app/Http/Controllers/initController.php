@@ -105,11 +105,7 @@ class initController extends Controller
             'student_id' => '30504'
         ]);
 
-        Admin::create([
-            'id' => 'admin',
-            'password' => Hash::make('rhtlgustlstmdqlsrlawhddnjsshtmdwns'),
-            'name' => '관리자다'
-        ]);
+
         // 게시판 프로필 사진 등 저장폴더 생성
         Storage::makeDirectory('public/board_img');
         Storage::makeDirectory('public/profile_img');
