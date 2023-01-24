@@ -31,4 +31,26 @@ class CommentController extends Controller
         }
 
     }
+
+    public function commentModify(Request $request,User $user){
+        $comment = Comment::find($request->comment_id);
+        if ($comment->user_id == auth()->user()->id || auth()->user()->type === 'admin'){
+            $comment->update(['contents' => $request->contents]);
+            return back();
+        }
+        else {
+            return back()->with('msg','자기가 쓴 댓글만 수정 및 삭제가 가능합니다.');
+        }
+    }
+
+    public function commentDelete($id){
+        $comment = Comment::find($id);
+        if ($comment->user_id == auth()->user()->id || auth()->user()->type === 'admin'){
+            $comment->delete();
+            return back();
+        }
+        else {
+            return back()->with('msg','자기가 쓴 댓글만 수정 및 삭제가 가능합니다.');
+        }
+    }
 }

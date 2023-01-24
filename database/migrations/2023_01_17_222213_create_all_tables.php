@@ -76,11 +76,12 @@ class CreateAllTables extends Migration
             $table->bigInteger('views')->default(0);
             $table->bigInteger('like')->default(0);
             $table->timestamp('created_at')->useCurrent();
+            $table->string('type')->default('post');
         });
         Schema::create('boards_views', function (Blueprint $table) {
             $table->id();
             $table->foreignId('board_id')->constrained();
-                $table->foreignId('user_id')->constrained();
+            $table->foreignId('user_id')->constrained();
             $table->boolean('views')->default(0);
         });
         Schema::create('boards_likes', function (Blueprint $table) {
