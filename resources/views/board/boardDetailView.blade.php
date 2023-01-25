@@ -111,7 +111,7 @@
                 $('.chg_dir').html('▲');
             }
         }
-    </script>ㅅ
+    </script>
 @endsection
 @section('contents')
     <div>
